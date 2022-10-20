@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_recommender/auth_page/auth_page.dart';
+import 'package:movie_recommender/core/navigation_manager.dart';
 import 'package:movie_recommender/firebase_options.dart';
+import 'package:movie_recommender/view/widgets/keyboard_dismisser.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,11 +15,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Movie Recommender',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const AuthPage(),
+    return KeyboardDismisser(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Movie Recommender',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: const NavigationManager(),
+      ),
     );
   }
 }
