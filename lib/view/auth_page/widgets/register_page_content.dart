@@ -22,6 +22,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(height: 40),
         const Text('Register Page'),
         const SizedBox(height: 20),
         CustomInputField(controller: emailController),

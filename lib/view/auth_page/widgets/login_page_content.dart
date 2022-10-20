@@ -20,6 +20,7 @@ class _LoginPageContentState extends State<LoginPageContent> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(height: 40),
         const Text('Login Page'),
         const SizedBox(height: 20),
         CustomInputField(controller: emailController),

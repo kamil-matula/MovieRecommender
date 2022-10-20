@@ -12,14 +12,16 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(), // TODO: Customize it or remove it
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: BlocBuilder<AuthPageTypeCubit, AuthPageType>(
-          builder: (_, pageType) {
-            return pageType == AuthPageType.Login
-                ? const LoginPageContent()
-                : const RegisterPageContent();
-          },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: BlocBuilder<AuthPageTypeCubit, AuthPageType>(
+            builder: (_, pageType) {
+              return pageType == AuthPageType.Login
+                  ? const LoginPageContent()
+                  : const RegisterPageContent();
+            },
+          ),
         ),
       ),
     );
