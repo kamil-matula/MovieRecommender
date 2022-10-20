@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_recommender/main_page/cubit/bottom_nav_bar_cubit.dart';
-import 'package:movie_recommender/main_page/widgets/all_movies_tab.dart';
-import 'package:movie_recommender/main_page/widgets/my_movies_tab.dart';
-import 'package:movie_recommender/main_page/widgets/my_preferences_tab.dart';
+import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
+import 'package:movie_recommender/view/main_page/widgets/all_movies_tab.dart';
+import 'package:movie_recommender/view/main_page/widgets/my_movies_tab.dart';
+import 'package:movie_recommender/view/main_page/widgets/my_preferences_tab.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
