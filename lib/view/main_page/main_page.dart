@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
@@ -15,7 +16,15 @@ class MainPage extends StatelessWidget {
 
   Widget _body(BuildContext context, int index) {
     return Scaffold(
-      appBar: AppBar(), // TODO: Customize it or remove it
+      // TODO: Customize or remove AppBar
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: FirebaseAuth.instance.signOut,
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: _tab(index),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
