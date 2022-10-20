@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/main_page/cubit/bottom_nav_bar_cubit.dart';
 import 'package:movie_recommender/main_page/widgets/all_movies_tab.dart';
+import 'package:movie_recommender/main_page/widgets/my_movies_tab.dart';
 import 'package:movie_recommender/main_page/widgets/my_preferences_tab.dart';
 
 class MainPage extends StatelessWidget {
@@ -24,6 +25,10 @@ class MainPage extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.question_mark),
+            label: 'My Movies',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.question_mark),
             label: 'My Preferences',
           ),
         ],
@@ -43,6 +48,10 @@ Widget _tab(int index) {
       ),
       Offstage(
         offstage: index != 1,
+        child: const MyMoviesTab(),
+      ),
+      Offstage(
+        offstage: index != 2,
         child: const MyPreferencesTab(),
       ),
     ],

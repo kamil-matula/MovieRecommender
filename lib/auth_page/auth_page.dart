@@ -14,6 +14,7 @@ class AuthPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // TODO: Add input fields and buttons
+          const Text('Login Page'),
           Center(
             child: ElevatedButton(
               onPressed: () async {
