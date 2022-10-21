@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 
+import '../../widgets/custom_button.dart';
+
 class LoginPageContent extends StatefulWidget {
   const LoginPageContent({Key? key}) : super(key: key);
 
@@ -20,17 +22,26 @@ class _LoginPageContentState extends State<LoginPageContent> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 40),
-        const Text('Login Page'),
+        const SizedBox(height: 100),
+        const Text(
+          'Login',
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 100),
+        CustomInputField(controller: emailController, labelText: 'E-mail'),
         const SizedBox(height: 20),
-        CustomInputField(controller: emailController),
+        CustomInputField(
+            controller: passwordController,
+            obscureText: true,
+            labelText: 'Password'),
         const SizedBox(height: 20),
-        CustomInputField(controller: passwordController, obscureText: true),
-        const SizedBox(height: 20),
-        ElevatedButton(onPressed: _signIn, child: const Text('Log in')),
+        CustomButton(
+          text: 'Log in',
+          onPressed: _signIn,
+        ),
         TextButton(
           onPressed: context.read<AuthPageTypeCubit>().goToRegisterPage,
-          child: const Text('Don`t have an account? Register'),
+          child: const Text('Don`t have an account? Sign up!'),
         ),
       ],
     );
