@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Movie Recommender',
-        theme: ThemeData(primarySwatch: PRIMARY_SWATCH_COLOR),
+        theme: ThemeData(primarySwatch: Colors.blue),
         home: const NavigationManager(),
       ),
     );
