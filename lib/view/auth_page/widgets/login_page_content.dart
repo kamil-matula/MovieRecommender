@@ -24,7 +24,7 @@ class _LoginPageContentState extends State<LoginPageContent> {
       children: [
         const SizedBox(height: 100),
         const Text(
-          'Login',
+          'Sign in',
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 100),
@@ -36,7 +36,7 @@ class _LoginPageContentState extends State<LoginPageContent> {
             labelText: 'Password'),
         const SizedBox(height: 20),
         CustomButton(
-          text: 'Log in',
+          text: 'Sign in',
           onPressed: _signIn,
         ),
         TextButton(

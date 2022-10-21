@@ -49,7 +49,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
         ),
         TextButton(
           onPressed: context.read<AuthPageTypeCubit>().goToLoginPage,
-          child: const Text('Already have an account? Log in!'),
+          child: const Text('Already have an account? Sign in!'),
         ),
       ],
     );
