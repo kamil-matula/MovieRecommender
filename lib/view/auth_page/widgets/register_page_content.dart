@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
+import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 
 class RegisterPageContent extends StatefulWidget {
@@ -22,25 +25,33 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 40),
-        const Text('Register Page'),
-        const SizedBox(height: 20),
-        CustomInputField(controller: emailController),
+        const SizedBox(height: 100),
+        const Text(
+          SIGN_UP,
+          style: AUTH_TITLE_TEXT_STYLE,
+        ),
+        const SizedBox(height: 100),
+        CustomInputField(controller: emailController, labelText: EMAIL),
         const SizedBox(height: 20),
         CustomInputField(
           controller: passwordController,
           obscureText: true,
+          labelText: PASSWORD,
         ),
         const SizedBox(height: 20),
         CustomInputField(
           controller: repeatedPasswordController,
           obscureText: true,
+          labelText: REPEAT_PASSWORD,
         ),
         const SizedBox(height: 20),
-        ElevatedButton(onPressed: _signUp, child: const Text('Register')),
+        CustomButton(
+          text: SIGN_UP,
+          onPressed: _signUp,
+        ),
         TextButton(
           onPressed: context.read<AuthPageTypeCubit>().goToLoginPage,
-          child: const Text('Already have an account? Log in'),
+          child: const Text(USER_HAS_AN_ACCOUNT),
         ),
       ],
     );
