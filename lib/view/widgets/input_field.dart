@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_recommender/constants/constant_colors.dart';
+import 'package:movie_recommender/constants/constant_texts.dart';
 
 /// TODO: Customise it
 class CustomInputField extends StatelessWidget {
@@ -18,10 +20,10 @@ class CustomInputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      obscuringCharacter: '●',
+      obscuringCharacter: OBSCURING_CHARACTER,
       style: const TextStyle(
         fontSize: 18,
-        color: Color(0xFF0F183D),
+        color: FORM_TEXT_COLOR,
       ),
       // Borders:
       decoration: InputDecoration(
@@ -29,7 +31,7 @@ class CustomInputField extends StatelessWidget {
         errorBorder: createBorderStyle(),
         focusedErrorBorder: createBorderStyle(),
         focusedBorder: createBorderStyle(),
-        fillColor: const Color(0x4D3589EC),
+        fillColor: FORM_BACKGROUND_COLOR,
         filled: true,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
@@ -45,7 +47,7 @@ class CustomInputField extends StatelessWidget {
   OutlineInputBorder createBorderStyle() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
-      borderSide: const BorderSide(color: Color(0x3589EC)),
+      borderSide: const BorderSide(color: FORM_BORDER_COLOR),
     );
   }
 }

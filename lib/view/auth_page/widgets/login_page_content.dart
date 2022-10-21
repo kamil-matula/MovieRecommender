@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
+import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
-
-import '../../widgets/custom_button.dart';
 
 class LoginPageContent extends StatefulWidget {
   const LoginPageContent({Key? key}) : super(key: key);
@@ -24,24 +24,24 @@ class _LoginPageContentState extends State<LoginPageContent> {
       children: [
         const SizedBox(height: 100),
         const Text(
-          'Sign in',
+          SIGN_IN,
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 100),
-        CustomInputField(controller: emailController, labelText: 'E-mail'),
+        CustomInputField(controller: emailController, labelText: EMAIL),
         const SizedBox(height: 20),
         CustomInputField(
             controller: passwordController,
             obscureText: true,
-            labelText: 'Password'),
+            labelText: PASSWORD),
         const SizedBox(height: 20),
         CustomButton(
-          text: 'Sign in',
+          text: SIGN_IN,
           onPressed: _signIn,
         ),
         TextButton(
           onPressed: context.read<AuthPageTypeCubit>().goToRegisterPage,
-          child: const Text('Don`t have an account? Sign up!'),
+          child: const Text(USER_DOES_NOT_HAVE_AN_ACCOUNT),
         ),
       ],
     );
