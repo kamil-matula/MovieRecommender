@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
@@ -27,7 +28,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
         const SizedBox(height: 100),
         const Text(
           SIGN_UP,
-          style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+          style: AUTH_TITLE_TEXT_STYLE,
         ),
         const SizedBox(height: 100),
         CustomInputField(controller: emailController, labelText: EMAIL),

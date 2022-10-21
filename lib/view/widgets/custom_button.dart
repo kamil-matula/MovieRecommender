@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Function onPressed;
+  final void Function() onPressed;
 
   const CustomButton({
     Key? key,
@@ -16,9 +16,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       height: 60,
       child: ElevatedButton(
-        onPressed: () {
-          onPressed();
-        },
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
         child: Text(
           text,
