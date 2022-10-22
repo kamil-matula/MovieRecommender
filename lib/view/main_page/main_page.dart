@@ -53,7 +53,7 @@ Widget _tab(int index) {
     children: [
       Offstage(
         offstage: index != 0,
-        child: const AllMoviesTab(),
+        child: AllMoviesTab(),
       ),
       Offstage(
         offstage: index != 1,
