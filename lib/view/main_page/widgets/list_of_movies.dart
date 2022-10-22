@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class ListOfMovies extends StatefulWidget {
   final List<Movie> movies;
@@ -21,16 +22,23 @@ class _ListOfMoviesState extends State<ListOfMovies> {
     return ListView.builder(
       itemCount: widget.movies.length,
       itemBuilder: (BuildContext context, int index) {
+        String? image_url = widget.movies[index].url;
         return Card(
           child: Column(
             children: [
               Row(
                 children: [
-                  Image.asset(
-                    'assets/images/placeholder.png',
-                    width: 140,
-                    height: 140,
-                  ),
+                  image_url != null
+                      ? OptimizedCacheImage(
+                          imageUrl: image_url,
+                          width: 140,
+                          height: 140,
+                        )
+                      : Image.asset(
+                          'assets/images/placeholder.png',
+                          width: 140,
+                          height: 140,
+                        ),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 250),
                     child: Padding(

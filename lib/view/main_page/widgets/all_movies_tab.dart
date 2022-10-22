@@ -11,18 +11,21 @@ class AllMoviesTab extends StatelessWidget {
       'Peter Jackson',
       'Fantasy',
       2001,
+      null,
     ),
     Movie(
       'The Lord of the Rings: The Two Towers',
       'Peter Jackson',
       'Fantasy',
       2002,
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png',
     ),
     Movie(
       'The Lord of the Rings: The Return of the King',
       'Peter Jackson',
       'Fantasy',
       2003,
+      null,
     ),
   ];
 

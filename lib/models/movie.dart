@@ -3,6 +3,7 @@ class Movie {
   final String director;
   final String genre;
   final int year;
+  final String? url;
 
-  Movie(this.title, this.director, this.genre, this.year);
+  Movie(this.title, this.director, this.genre, this.year, this.url);
 }
