@@ -26,10 +26,10 @@ class _ListOfMoviesState extends State<ListOfMovies> {
             children: [
               Row(
                 children: [
-                  Container(
+                  Image.asset(
+                    'assets/images/placeholder.png',
                     width: 140,
                     height: 140,
-                    color: Colors.grey,
                   ),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 250),
