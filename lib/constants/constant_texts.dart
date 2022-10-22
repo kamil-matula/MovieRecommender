@@ -6,3 +6,5 @@ const String REPEAT_PASSWORD = 'Repeat password';
 const String USER_HAS_AN_ACCOUNT = 'Already have an account? Sign in!';
 const String USER_DOES_NOT_HAVE_AN_ACCOUNT = 'Don`t have an account? Sign up!';
 const String OBSCURING_CHARACTER = '●';
+const String DIRECTOR = 'Director';
+const String GENRE = 'Genre';
