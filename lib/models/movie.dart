@@ -5,5 +5,11 @@ class Movie {
   final int year;
   final String? url;
 
-  Movie(this.title, this.director, this.genre, this.year, this.url);
+  Movie({
+    required this.title,
+    required this.director,
+    required this.genre,
+    required this.year,
+    this.url,
+  });
 }

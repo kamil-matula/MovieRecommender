@@ -51,6 +51,14 @@ class _MovieItemState extends State<MovieItem> {
                         imageUrl: image_url,
                         width: 140,
                         height: 140,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       )
                     : Image.asset(
                         PLACEHOLDER,
@@ -58,11 +66,13 @@ class _MovieItemState extends State<MovieItem> {
                         height: 140,
                       ),
                 Container(
-                  constraints: const BoxConstraints(maxWidth: 250),
+                  constraints:
+                      const BoxConstraints(maxWidth: 250, minHeight: 140),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           widget.movie.title,
@@ -70,7 +80,7 @@ class _MovieItemState extends State<MovieItem> {
                           maxLines: 3,
                           style: MOVIE_TITLE,
                         ),
-                        const SizedBox(height: 40),
+                        // const Spacer(),
                         Text(
                           widget.movie.year.toString(),
                           style: MOVIE_HEADER,
