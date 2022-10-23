@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
+import 'package:movie_recommender/view/main_page/widgets/admin_movies.dart';
 import 'package:movie_recommender/view/main_page/widgets/all_movies_tab.dart';
 import 'package:movie_recommender/view/main_page/widgets/my_movies_tab.dart';
 import 'package:movie_recommender/view/main_page/widgets/my_preferences_tab.dart';
@@ -24,11 +25,7 @@ class MainPage extends StatelessWidget {
     }
 
     if (isAdmin) {
-      return Scaffold(
-        appBar: _appBar(),
-        // TODO: Change to another page, if necessary.
-        body: const AllMoviesTab(),
-      );
+      return AdminMovies(appBar: _appBar());
     }
 
     return BlocBuilder<BottomNavBarCubit, int>(
