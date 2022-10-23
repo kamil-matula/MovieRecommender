@@ -27,7 +27,7 @@ class MainPage extends StatelessWidget {
       return Scaffold(
         appBar: _appBar(),
         // TODO: Change to another page, if necessary.
-        body: AllMoviesTab(),
+        body: const AllMoviesTab(),
       );
     }
 
@@ -75,7 +75,7 @@ class MainPage extends StatelessWidget {
       children: [
         Offstage(
           offstage: index != 0,
-          child: AllMoviesTab(),
+          child: const AllMoviesTab(),
         ),
         Offstage(
           offstage: index != 1,
