@@ -104,4 +104,12 @@ class _MovieDialogState extends State<MovieDialog> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    directorController.dispose();
+    yearController.dispose();
+    super.dispose();
+  }
 }
