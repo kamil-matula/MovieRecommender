@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
@@ -24,12 +25,33 @@ class _MovieDialogState extends State<MovieDialog> {
     String label,
     double width,
     TextEditingController textEditingController,
+    int lengthLimit,
   ) {
     return SizedBox(
       width: width,
       child: TextFormField(
         controller: textEditingController,
         decoration: InputDecoration(labelText: label),
+        inputFormatters: [LengthLimitingTextInputFormatter(lengthLimit)],
+      ),
+    );
+  }
+
+  Widget textFieldDigitOnly(
+    String label,
+    double width,
+    TextEditingController textEditingController,
+  ) {
+    return SizedBox(
+      width: width,
+      child: TextFormField(
+        controller: textEditingController,
+        decoration: InputDecoration(labelText: label),
+        keyboardType: const TextInputType.numberWithOptions(),
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp('[0-9]+')),
+          LengthLimitingTextInputFormatter(4)
+        ],
       ),
     );
   }
@@ -51,16 +73,13 @@ class _MovieDialogState extends State<MovieDialog> {
               width: 140,
               height: 140,
             ),
-            TextFormField(
-              controller: titleController,
-              decoration: const InputDecoration(labelText: MOVIE_TITLE),
-            ),
+            textField(MOVIE_TITLE, 300, titleController, 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                textField(DIRECTOR, 110, directorController),
-                textField(YEAR, 50, yearController),
+                textField(DIRECTOR, 110, directorController, 20),
+                textFieldDigitOnly(YEAR, 50, yearController),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
