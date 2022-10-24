@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
@@ -23,8 +22,8 @@ class _MovieItemState extends State<MovieItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(description, style: MOVIE_SUB_HEADER),
-          Text(value, style: MOVIE_HEADER),
+          Text(description, style: MOVIE_SUB_HEADER_STYLE),
+          Text(value, style: MOVIE_HEADER_STYLE),
         ],
       ),
     );
@@ -75,11 +74,11 @@ class _MovieItemState extends State<MovieItem> {
                           widget.movie.title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
-                          style: MOVIE_TITLE,
+                          style: MOVIE_TITLE_STYLE,
                         ),
                         Text(
                           widget.movie.year.toString(),
-                          style: MOVIE_HEADER,
+                          style: MOVIE_HEADER_STYLE,
                         ),
                       ],
                     ),
