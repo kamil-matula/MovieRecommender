@@ -113,11 +113,12 @@ class _MovieDialogState extends State<MovieDialog> {
       actionsAlignment: MainAxisAlignment.spaceAround,
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.pop(context, CANCEL),
+          // TODO: POST data to database
+          onPressed: () => Navigator.pop(context),
           child: const Text(CANCEL),
         ),
         TextButton(
-          onPressed: () => Navigator.pop(context, OK),
+          onPressed: () => Navigator.pop(context),
           child: const Text(OK),
         ),
       ],
