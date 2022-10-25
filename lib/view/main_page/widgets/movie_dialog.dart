@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/models/movie.dart';
 
 // TODO: Replace with list from backend
 const List<String> genres = ['Action', 'Fantasy', 'Comedy', 'Drama'];
 
+// TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {
   const MovieDialog({Key? key}) : super(key: key);
 
@@ -20,7 +23,7 @@ class MovieDialog extends StatefulWidget {
 class _MovieDialogState extends State<MovieDialog> {
   // Poster:
   final ImagePicker _picker = ImagePicker();
-  Image? _image;
+  XFile? _file;
 
   // Details:
   final TextEditingController _titleController = TextEditingController();
@@ -39,12 +42,14 @@ class _MovieDialogState extends State<MovieDialog> {
           child: Column(
             children: [
               GestureDetector(
-                onTap: _chooseImage,
+                onTap: _chooseImageFromGallery,
                 child: Stack(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: _image ?? Image.asset(PLACEHOLDER, height: 140.0),
+                      child: _file != null
+                          ? Image.file(File(_file!.path), height: 140)
+                          : Image.asset(PLACEHOLDER, height: 140.0),
                     ),
                     Positioned(
                       right: 0,
@@ -108,14 +113,11 @@ class _MovieDialogState extends State<MovieDialog> {
       actionsAlignment: MainAxisAlignment.spaceAround,
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: Navigator.of(context).pop,
           child: const Text(CANCEL),
         ),
         TextButton(
-          onPressed: () {
-            // TODO: POST data to database
-            Navigator.of(context).pop();
-          },
+          onPressed: _addMovie,
           child: const Text(OK),
         ),
       ],
@@ -157,12 +159,43 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
-  Future<void> _chooseImage() async {
-    XFile? img = await _picker.pickImage(source: ImageSource.gallery);
-    if (img == null) return;
-
-    _image = Image.file(File(img.path), height: 140);
+  Future<void> _chooseImageFromGallery() async {
+    _file = await _picker.pickImage(source: ImageSource.gallery);
     if (mounted) setState(() {});
+  }
+
+  Future<void> _addMovie() async {
+    // TODO: Add error-handling (check if everything is valid)
+    String title = _titleController.text;
+    String director = _directorController.text;
+    int year = int.parse(_yearController.text);
+    String? url;
+
+    // Upload poster:
+    if (_file != null) {
+      final SettableMetadata metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': _file!.path},
+      );
+      TaskSnapshot snapshot = await FirebaseStorage.instance
+          .ref()
+          .child('posters')
+          .child('${DateTime.now()}.jpg')
+          .putFile(File(_file!.path), metadata);
+      Uri uri = Uri.parse(await snapshot.ref.getDownloadURL());
+      url = 'https://${uri.host}${uri.path}';
+    }
+
+    // Prepare object:
+    Movie movie = Movie(
+      title: title,
+      director: director,
+      genre: selectedGenre,
+      year: year,
+      url: url,
+    );
+
+    if (mounted) Navigator.of(context).pop();
   }
 
   @override
