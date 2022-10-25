@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 
-// TODO: This is temporary list only
+// TODO: Replace with list from backend
 const List<String> genres = ['Action', 'Fantasy', 'Comedy', 'Drama'];
 
 class MovieDialog extends StatefulWidget {
@@ -15,9 +18,14 @@ class MovieDialog extends StatefulWidget {
 }
 
 class _MovieDialogState extends State<MovieDialog> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController directorController = TextEditingController();
-  final TextEditingController yearController = TextEditingController();
+  // Poster:
+  final ImagePicker _picker = ImagePicker();
+  Image? _image;
+
+  // Details:
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _directorController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
   String selectedGenre = genres.first;
 
   @override
@@ -30,23 +38,47 @@ class _MovieDialogState extends State<MovieDialog> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Image.asset(
-                PLACEHOLDER,
-                width: 140,
-                height: 140,
+              GestureDetector(
+                onTap: _chooseImage,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: _image ?? Image.asset(PLACEHOLDER, height: 140.0),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: Colors.blue,
+                        ),
+                        width: 30.0,
+                        height: 30.0,
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 17.5,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              _textField(MOVIE_TITLE, 300, titleController, 50),
+              _textField(MOVIE_TITLE, 300, _titleController, 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _textField(DIRECTOR, 110, directorController, 20),
-                  _textFieldDigitOnly(YEAR, 50, yearController),
+                  _textField(DIRECTOR, 110, _directorController, 20),
+                  _textFieldDigitOnly(YEAR, 50, _yearController),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: FORM_BACKGROUND_COLOR, width: 2.0),
+                      border:
+                          Border.all(color: FORM_BACKGROUND_COLOR, width: 2.0),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
@@ -125,11 +157,19 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
+  Future<void> _chooseImage() async {
+    XFile? img = await _picker.pickImage(source: ImageSource.gallery);
+    if (img == null) return;
+
+    _image = Image.file(File(img.path), height: 140);
+    if (mounted) setState(() {});
+  }
+
   @override
   void dispose() {
-    titleController.dispose();
-    directorController.dispose();
-    yearController.dispose();
+    _titleController.dispose();
+    _directorController.dispose();
+    _yearController.dispose();
     super.dispose();
   }
 }
