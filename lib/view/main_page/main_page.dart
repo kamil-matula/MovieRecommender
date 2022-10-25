@@ -5,7 +5,6 @@ import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/admin_movies.dart';
 import 'package:movie_recommender/view/main_page/widgets/all_movies_tab.dart';
-import 'package:movie_recommender/view/main_page/widgets/my_movies_tab.dart';
 import 'package:movie_recommender/view/main_page/widgets/my_preferences_tab.dart';
 
 class MainPage extends StatelessWidget {
@@ -41,10 +40,6 @@ class MainPage extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.question_mark),
-                label: 'My Movies',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.question_mark),
                 label: 'My Preferences',
               ),
             ],
@@ -76,10 +71,6 @@ class MainPage extends StatelessWidget {
         ),
         Offstage(
           offstage: index != 1,
-          child: const MyMoviesTab(),
-        ),
-        Offstage(
-          offstage: index != 2,
           child: const MyPreferencesTab(),
         ),
       ],
