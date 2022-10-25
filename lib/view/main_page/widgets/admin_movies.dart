@@ -30,7 +30,10 @@ final List<Movie> temporaryMovies = [
 class AdminMovies extends StatelessWidget {
   final AppBar appBar;
 
-  const AdminMovies({Key? key, required this.appBar}) : super(key: key);
+  const AdminMovies({
+    Key? key,
+    required this.appBar,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +44,9 @@ class AdminMovies extends StatelessWidget {
         onPressed: () async {
           showDialog(
             context: context,
-            builder: (BuildContext context) {
-              return const MovieDialog();
-            },
+            builder: (_) => const MovieDialog(),
           );
         },
-        backgroundColor: Colors.green,
         child: const Icon(Icons.add),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
@@ -79,8 +80,18 @@ class _MovieDialogState extends State<MovieDialog> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: _file != null
-                ? Image.file(File(_file!.path), height: 140)
-                : Image.asset(PLACEHOLDER, height: 140.0),
+                ? Image.file(
+                    File(_file!.path),
+                    height: 140,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    PLACEHOLDER,
+                    height: 140.0,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
           ),
           Positioned(
             right: 0,
@@ -182,8 +193,10 @@ class _MovieDialogState extends State<MovieDialog> {
     String? url;
 
     if (title.isEmpty || director.isEmpty || year == null) {
-      // TODO: Display toast
-      print('Invalid data!');
+      Fluttertoast.showToast(
+        msg: 'Invalid data!',
+        backgroundColor: Colors.grey,
+      );
       return;
     }
 
