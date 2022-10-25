@@ -43,12 +43,12 @@ class _MovieDialogState extends State<MovieDialog> {
             children: [
               _imageContainer(),
               _textField(MOVIE_TITLE, 300, _titleController, 50),
+              _textField(DIRECTOR, 300, _directorController, 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _textField(DIRECTOR, 110, _directorController, 20),
-                  _textFieldDigitOnly(YEAR, 50, _yearController),
+                  _textFieldDigitOnly(YEAR, 80, _yearController),
                   _dropdown(),
                 ],
               )
