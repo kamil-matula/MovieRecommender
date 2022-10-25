@@ -1,0 +1,15 @@
+const List<String> genres = [
+  'Action',
+  'Adventure',
+  'Animation',
+  'Comedy',
+  'Documentary',
+  'Drama',
+  'Fantasy',
+  'Musical',
+  'Historical',
+  'Horror',
+  'Sci-fi',
+  'Thriller',
+  'Western',
+];

@@ -8,11 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
+import 'package:movie_recommender/constants/constant_genres.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/models/movie.dart';
-
-// TODO: Replace with list from backend
-const List<String> genres = ['Action', 'Fantasy', 'Comedy', 'Drama'];
 
 // TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {

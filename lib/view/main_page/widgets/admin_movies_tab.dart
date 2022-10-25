@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/view/main_page/widgets/list_of_movies.dart';
-import 'package:movie_recommender/view/main_page/widgets/movie_dialog.dart';
+import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 
 // TODO: This is temporary list only
 final List<Movie> temporaryMovies = [
@@ -27,10 +27,10 @@ final List<Movie> temporaryMovies = [
   ),
 ];
 
-class AdminMovies extends StatelessWidget {
+class AdminMoviesTab extends StatelessWidget {
   final AppBar appBar;
 
-  const AdminMovies({
+  const AdminMoviesTab({
     Key? key,
     required this.appBar,
   }) : super(key: key);
