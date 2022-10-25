@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,7 +105,7 @@ class _MovieDialogState extends State<MovieDialog> {
   }
 
   Widget _dropdown() {
-    return  Container(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -118,7 +119,7 @@ class _MovieDialogState extends State<MovieDialog> {
           alignment: AlignmentDirectional.center,
           value: selectedGenre,
           items: genres.map<DropdownMenuItem<String>>(
-                (String value) {
+            (String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
@@ -186,19 +187,18 @@ class _MovieDialogState extends State<MovieDialog> {
       return;
     }
 
-    // Upload poster:
+    // Upload poster to Firebase Storage:
+    String docName = '${title}_$year';
     if (_file != null) {
-      final SettableMetadata metadata = SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {'picked-file-path': _file!.path},
-      );
       TaskSnapshot snapshot = await FirebaseStorage.instance
           .ref()
           .child('posters')
-          .child('${title}_$year.jpg')
-          .putFile(File(_file!.path), metadata);
-      Uri uri = Uri.parse(await snapshot.ref.getDownloadURL());
-      url = 'https://${uri.host}${uri.path}';
+          .child('$docName.jpg')
+          .putFile(
+            File(_file!.path),
+            SettableMetadata(contentType: 'image/jpeg'),
+          );
+      url = await snapshot.ref.getDownloadURL();
     }
 
     // Prepare object:
@@ -209,6 +209,12 @@ class _MovieDialogState extends State<MovieDialog> {
       year: year,
       url: url,
     );
+
+    // Save object in Firestore Database:
+    FirebaseFirestore.instance
+        .collection('movies')
+        .doc(docName)
+        .set(movie.toJson());
 
     if (mounted) Navigator.of(context).pop();
   }
