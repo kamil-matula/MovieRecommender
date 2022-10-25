@@ -8,7 +8,10 @@ import 'package:optimized_cached_image/optimized_cached_image.dart';
 class MovieItem extends StatefulWidget {
   final Movie movie;
 
-  const MovieItem({Key? key, required this.movie}) : super(key: key);
+  const MovieItem({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   State<MovieItem> createState() => _MovieItemState();
@@ -17,49 +20,41 @@ class MovieItem extends StatefulWidget {
 class _MovieItemState extends State<MovieItem> {
   bool isExpanded = false;
 
-  Widget cell(String description, String value) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(description, style: MOVIE_SUB_HEADER_STYLE),
-          Text(value, style: MOVIE_HEADER_STYLE),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     String? image_url = widget.movie.url;
     return GestureDetector(
-      onTap: () => setState(() {
+      onTap: () {
         isExpanded = !isExpanded;
-      }),
+        if (mounted) setState(() {});
+      },
       child: Card(
         child: Column(
           children: [
-            // Always visible row:
+            // Always visible:
             Row(
               children: [
                 image_url != null
                     ? OptimizedCacheImage(
                         imageUrl: image_url,
-                        width: 140,
+                        width: 100,
                         height: 140,
-                        imageBuilder: (context, imageProvider) => Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
+                        imageBuilder: (_, imageProvider) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       )
                     : Image.asset(
                         PLACEHOLDER,
-                        width: 140,
+                        width: 100,
                         height: 140,
+                        fit: BoxFit.cover,
                       ),
                 Container(
                   constraints:
@@ -86,19 +81,32 @@ class _MovieItemState extends State<MovieItem> {
                 )
               ],
             ),
-            // Visible after click
+
+            // Visible after click:
             if (isExpanded)
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
-                    cell(DIRECTOR, widget.movie.director),
-                    cell(GENRE, widget.movie.genre),
+                    _cell(DIRECTOR, widget.movie.director),
+                    _cell(GENRE, widget.movie.genre),
                   ],
                 ),
               )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _cell(String description, String value) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(description, style: MOVIE_SUB_HEADER_STYLE),
+          Text(value, style: MOVIE_HEADER_STYLE),
+        ],
       ),
     );
   }
