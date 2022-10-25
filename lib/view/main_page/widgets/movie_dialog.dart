@@ -41,36 +41,7 @@ class _MovieDialogState extends State<MovieDialog> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              GestureDetector(
-                onTap: _chooseImageFromGallery,
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: _file != null
-                          ? Image.file(File(_file!.path), height: 140)
-                          : Image.asset(PLACEHOLDER, height: 140.0),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: Colors.blue,
-                        ),
-                        width: 30.0,
-                        height: 30.0,
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 17.5,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              _imageContainer(),
               _textField(MOVIE_TITLE, 300, _titleController, 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,32 +49,7 @@ class _MovieDialogState extends State<MovieDialog> {
                 children: [
                   _textField(DIRECTOR, 110, _directorController, 20),
                   _textFieldDigitOnly(YEAR, 50, _yearController),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(color: FORM_BACKGROUND_COLOR, width: 2.0),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        alignment: AlignmentDirectional.center,
-                        value: selectedGenre,
-                        items: genres.map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (String? value) {
-                          selectedGenre = value.toString();
-                          if (mounted) setState(() {});
-                        },
-                      ),
-                    ),
-                  ),
+                  _dropdown(),
                 ],
               )
             ],
@@ -121,6 +67,70 @@ class _MovieDialogState extends State<MovieDialog> {
           child: const Text(OK),
         ),
       ],
+    );
+  }
+
+  Widget _imageContainer() {
+    return GestureDetector(
+      onTap: _chooseImageFromGallery,
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: _file != null
+                ? Image.file(File(_file!.path), height: 140)
+                : Image.asset(PLACEHOLDER, height: 140.0),
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: Colors.blue,
+              ),
+              width: 30.0,
+              height: 30.0,
+              child: const Icon(
+                Icons.edit,
+                color: Colors.white,
+                size: 17.5,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _dropdown() {
+    return  Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: FORM_BACKGROUND_COLOR,
+          width: 2.0,
+        ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          alignment: AlignmentDirectional.center,
+          value: selectedGenre,
+          items: genres.map<DropdownMenuItem<String>>(
+                (String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            },
+          ).toList(),
+          onChanged: (String? value) {
+            selectedGenre = value.toString();
+            if (mounted) setState(() {});
+          },
+        ),
+      ),
     );
   }
 
@@ -165,11 +175,16 @@ class _MovieDialogState extends State<MovieDialog> {
   }
 
   Future<void> _addMovie() async {
-    // TODO: Add error-handling (check if everything is valid)
     String title = _titleController.text;
     String director = _directorController.text;
-    int year = int.parse(_yearController.text);
+    int? year = int.tryParse(_yearController.text);
     String? url;
+
+    if (title.isEmpty || director.isEmpty || year == null) {
+      // TODO: Display toast
+      print('Invalid data!');
+      return;
+    }
 
     // Upload poster:
     if (_file != null) {
@@ -180,7 +195,7 @@ class _MovieDialogState extends State<MovieDialog> {
       TaskSnapshot snapshot = await FirebaseStorage.instance
           .ref()
           .child('posters')
-          .child('${DateTime.now()}.jpg')
+          .child('${title}_$year.jpg')
           .putFile(File(_file!.path), metadata);
       Uri uri = Uri.parse(await snapshot.ref.getDownloadURL());
       url = 'https://${uri.host}${uri.path}';
