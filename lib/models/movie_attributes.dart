@@ -11,16 +11,16 @@ class MovieAttributes {
   final int young_adult;
 
   MovieAttributes({
-    required this.funny,
-    required this.scary,
-    required this.touching,
-    required this.romantic,
-    required this.adventures,
-    required this.criminal,
-    required this.musical,
-    required this.cartoon,
-    required this.historical,
-    required this.young_adult,
+    this.funny = 0,
+    this.scary = 0,
+    this.touching = 0,
+    this.romantic = 0,
+    this.adventures = 0,
+    this.criminal = 0,
+    this.musical = 0,
+    this.cartoon = 0,
+    this.historical = 0,
+    this.young_adult = 0,
   });
 
   Map<String, dynamic> toJson() {

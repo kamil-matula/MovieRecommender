@@ -4,13 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
 import 'package:movie_recommender/constants/constant_genres.dart';
+import 'package:movie_recommender/constants/constant_movie_attributes.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/models/movie_attributes.dart';
 
 // TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {
@@ -29,7 +33,8 @@ class _MovieDialogState extends State<MovieDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _directorController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
-  String selectedGenre = genres.first;
+  String _selectedGenre = genres.first;
+  final MovieAttributes _attributes = MovieAttributes();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,7 @@ class _MovieDialogState extends State<MovieDialog> {
       title: const Text(ADD_NEW_MOVIE, textAlign: TextAlign.center),
       content: SizedBox(
         width: 300,
-        height: 450,
+        height: 600,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -51,12 +56,17 @@ class _MovieDialogState extends State<MovieDialog> {
                   _textFieldDigitOnly(YEAR, 80, _yearController),
                   _dropdown(),
                 ],
+              ),
+              Column(
+                children: _movieAttributes(),
               )
             ],
           ),
         ),
       ),
+      contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
       actionsAlignment: MainAxisAlignment.spaceAround,
+      actionsPadding: EdgeInsets.zero,
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
@@ -126,7 +136,7 @@ class _MovieDialogState extends State<MovieDialog> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           alignment: AlignmentDirectional.center,
-          value: selectedGenre,
+          value: _selectedGenre,
           items: genres.map<DropdownMenuItem<String>>(
             (String value) {
               return DropdownMenuItem<String>(
@@ -136,7 +146,7 @@ class _MovieDialogState extends State<MovieDialog> {
             },
           ).toList(),
           onChanged: (String? value) {
-            selectedGenre = value.toString();
+            _selectedGenre = value.toString();
             if (mounted) setState(() {});
           },
         ),
@@ -179,6 +189,36 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
+  List<Widget> _movieAttributes() {
+    return movie_attributes
+        .map(
+          (movie_attribute) => Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  movie_attribute,
+                  style: MOVIE_ATTRIBUTE_STYLE,
+                ),
+                RatingBar.builder(
+                  maxRating: 10,
+                  itemSize: 28,
+                  allowHalfRating: true,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {},
+                ),
+              ],
+            ),
+          ),
+        )
+        .toList();
+  }
+
   Future<void> _chooseImageFromGallery() async {
     _file = await _picker.pickImage(source: ImageSource.gallery);
     if (mounted) setState(() {});
@@ -216,9 +256,10 @@ class _MovieDialogState extends State<MovieDialog> {
     Movie movie = Movie(
       title: title,
       director: director,
-      genre: selectedGenre,
+      genre: _selectedGenre,
       year: year,
       url: url,
+      attributes: _attributes,
     );
 
     // Save object in Firestore Database:
