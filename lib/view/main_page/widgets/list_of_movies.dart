@@ -13,7 +13,7 @@ class ListOfMovies extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Movie> movies = snapshot.data!.docs
-              .map((el) => Movie.fromJson(el.data()))
+              .map((movie) => Movie.fromJson(movie.data()))
               .toList();
           return ListView.builder(
             itemCount: movies.length,
