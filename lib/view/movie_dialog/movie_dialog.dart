@@ -233,7 +233,7 @@ class _MovieDialogState extends State<MovieDialog> {
     String title = _titleController.text;
     String director = _directorController.text;
     int? year = int.tryParse(_yearController.text);
-    String? url;
+    String? poster_url;
 
     if (title.isEmpty || director.isEmpty || year == null) {
       Fluttertoast.showToast(
@@ -254,7 +254,7 @@ class _MovieDialogState extends State<MovieDialog> {
             File(_file!.path),
             SettableMetadata(contentType: 'image/jpeg'),
           );
-      url = await snapshot.ref.getDownloadURL();
+      poster_url = await snapshot.ref.getDownloadURL();
     }
 
     // Prepare object:
@@ -263,7 +263,7 @@ class _MovieDialogState extends State<MovieDialog> {
       director: director,
       genre: _selectedGenre,
       year: year,
-      url: url,
+      poster_url: poster_url,
       attributes: _attributes,
     );
 

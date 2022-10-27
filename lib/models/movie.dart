@@ -9,7 +9,7 @@ class Movie {
   final String director;
   final String genre;
   final int year;
-  final String? url;
+  final String? poster_url;
   final List<MovieAttribute?>? attributes;
 
   Movie({
@@ -17,7 +17,7 @@ class Movie {
     required this.director,
     required this.genre,
     required this.year,
-    this.url,
+    this.poster_url,
     this.attributes,
   });
 
