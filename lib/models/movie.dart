@@ -1,9 +1,12 @@
+import 'package:movie_recommender/models/movie_attributes.dart';
+
 class Movie {
   final String title;
   final String director;
   final String genre;
   final int year;
   final String? url;
+  final MovieAttributes? attributes;
 
   Movie({
     required this.title,
@@ -11,6 +14,7 @@ class Movie {
     required this.genre,
     required this.year,
     this.url,
+    this.attributes,
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +24,7 @@ class Movie {
       'genre': genre,
       'year': year,
       'url': url,
+      'attributes': attributes,
     };
   }
 
@@ -30,6 +35,7 @@ class Movie {
       genre: map['genre'] as String,
       year: map['year'] as int,
       url: map['url'] as String,
+      attributes: map['attributes'] as MovieAttributes,
     );
   }
 }
