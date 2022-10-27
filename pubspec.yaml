@@ -17,9 +17,12 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   fluttertoast: ^8.1.1
   image_picker: ^0.8.6
+  json_serializable: ^6.5.4
   optimized_cached_image: ^3.0.1
+  json_annotation: ^4.7.0
 
 dev_dependencies:
+  build_runner: ^2.0.0
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter

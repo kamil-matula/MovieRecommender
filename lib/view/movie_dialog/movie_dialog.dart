@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,7 @@ import 'package:movie_recommender/constants/constant_movie_attributes.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
-import 'package:movie_recommender/models/movie_attributes.dart';
+import 'package:movie_recommender/models/movie_attribute.dart';
 
 // TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {
@@ -34,7 +35,7 @@ class _MovieDialogState extends State<MovieDialog> {
   final TextEditingController _directorController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
   String _selectedGenre = genres.first;
-  final MovieAttributes _attributes = MovieAttributes();
+  final List<MovieAttribute> _attributes = List.from(movie_attributes);
 
   @override
   Widget build(BuildContext context) {
@@ -192,17 +193,17 @@ class _MovieDialogState extends State<MovieDialog> {
   List<Widget> _movieAttributes() {
     return movie_attributes
         .map(
-          (movie_attribute) => Padding(
+          (attribute) => Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  movie_attribute,
+                  attribute.name,
                   style: MOVIE_ATTRIBUTE_STYLE,
                 ),
                 RatingBar.builder(
-                  maxRating: 10,
+                  maxRating: 5,
                   itemSize: 28,
                   allowHalfRating: true,
                   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -210,7 +211,11 @@ class _MovieDialogState extends State<MovieDialog> {
                     Icons.star,
                     color: Colors.amber,
                   ),
-                  onRatingUpdate: (rating) {},
+                  onRatingUpdate: (rating) {
+                    _attributes
+                        .firstWhere((element) => element.name == attribute.name)
+                        .value = (rating * 2).toInt();
+                  },
                 ),
               ],
             ),
@@ -266,7 +271,7 @@ class _MovieDialogState extends State<MovieDialog> {
     FirebaseFirestore.instance
         .collection('movies')
         .doc(docName)
-        .set(movie.toJson());
+        .set(jsonDecode(jsonEncode(movie.toJson())));
 
     if (mounted) Navigator.of(context).pop();
   }

@@ -1,12 +1,16 @@
-import 'package:movie_recommender/models/movie_attributes.dart';
+import 'package:movie_recommender/models/movie_attribute.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'movie.g.dart';
+
+@JsonSerializable()
 class Movie {
   final String title;
   final String director;
   final String genre;
   final int year;
   final String? url;
-  final MovieAttributes? attributes;
+  final List<MovieAttribute?>? attributes;
 
   Movie({
     required this.title,
@@ -17,25 +21,8 @@ class Movie {
     this.attributes,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'director': director,
-      'genre': genre,
-      'year': year,
-      'url': url,
-      'attributes': attributes,
-    };
-  }
+  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
-  factory Movie.fromJson(Map<String, dynamic> map) {
-    return Movie(
-      title: map['title'] as String,
-      director: map['director'] as String,
-      genre: map['genre'] as String,
-      year: map['year'] as int,
-      url: map['url'] as String,
-      attributes: map['attributes'] as MovieAttributes,
-    );
-  }
+  /// Connect the generated [_$MovieToJson] function to the `toJson` method.
+  Map<String, dynamic> toJson() => _$MovieToJson(this);
 }
