@@ -3,6 +3,7 @@ import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/view/main_page/widgets/edit_movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class MovieItem extends StatefulWidget {
@@ -58,7 +59,7 @@ class _MovieItemState extends State<MovieItem> {
                       ),
                 Container(
                   constraints:
-                      const BoxConstraints(maxWidth: 250, minHeight: 140),
+                      const BoxConstraints(minWidth: 220 ,maxWidth: 220, minHeight: 140),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -75,11 +76,33 @@ class _MovieItemState extends State<MovieItem> {
                           widget.movie.year.toString(),
                           style: MOVIE_HEADER_STYLE,
                         ),
+
                       ],
                     ),
+
                   ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const EditMovieDialog(),
+                        );
+                      },
+                      child: const Text(EDIT),
+                    ),
+                  ],
                 )
               ],
+
             ),
 
             // Visible after click:

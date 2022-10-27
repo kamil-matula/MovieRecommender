@@ -13,3 +13,6 @@ const String GENRE = 'Genre';
 const String YEAR = 'Year';
 const String OK = 'OK';
 const String CANCEL = 'Cancel';
+const String EDIT = 'Edit';
+const String EDIT_MOVIE = 'Edit movie';
+
