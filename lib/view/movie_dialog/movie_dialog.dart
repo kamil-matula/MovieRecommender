@@ -77,40 +77,12 @@ class _MovieDialogState extends State<MovieDialog> {
                 padding: EdgeInsets.only(top: 20),
                 child: Text(MOVIE_ATTRIBUTES, style: MOVIE_HEADER_STYLE),
               ),
-              // Column(
-              //   children: _movieAttributes(),
-              // )
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _attributes.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _attributes[index].name,
-                          style: MOVIE_ATTRIBUTE_STYLE,
-                        ),
-                        RatingBar.builder(
-                          maxRating: 5,
-                          itemSize: 28,
-                          allowHalfRating: true,
-                          itemPadding:
-                              const EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (_, __) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            _attributes[index].value = (rating * 2).toInt();
-                          },
-                        ),
-                      ],
-                    ),
-                  );
+                itemBuilder: (_, index) {
+                  return _attributeItem(index);
                 },
               )
             ],
@@ -207,6 +179,34 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
+  Widget _attributeItem(int index) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            _attributes[index].name,
+            style: MOVIE_ATTRIBUTE_STYLE,
+          ),
+          RatingBar.builder(
+            maxRating: 5,
+            itemSize: 28,
+            allowHalfRating: true,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (_, __) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            onRatingUpdate: (rating) {
+              _attributes[index].value = (rating * 2).toInt();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _chooseImageFromGallery() async {
     _file = await _picker.pickImage(source: ImageSource.gallery);
     if (mounted) setState(() {});
@@ -259,12 +259,6 @@ class _MovieDialogState extends State<MovieDialog> {
     // _resetAttributes();
     if (mounted) Navigator.of(context).pop();
   }
-
-  // void _resetAttributes() {
-  //   for (var i = 0; i < _attributes.length; i++) {
-  //     _attributes[i].value = 0;
-  //   }
-  // }
 
   @override
   void dispose() {
