@@ -35,7 +35,7 @@ class _MovieDialogState extends State<MovieDialog> {
   final TextEditingController _directorController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
   String _selectedGenre = genres.first;
-  final List<MovieAttribute> _attributes = List.from(movie_attributes);
+  final List<MovieAttribute> _attributes = movie_attributes();
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,41 @@ class _MovieDialogState extends State<MovieDialog> {
                 padding: EdgeInsets.only(top: 20),
                 child: Text(MOVIE_ATTRIBUTES, style: MOVIE_HEADER_STYLE),
               ),
-              Column(
-                children: _movieAttributes(),
+              // Column(
+              //   children: _movieAttributes(),
+              // )
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _attributes.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _attributes[index].name,
+                          style: MOVIE_ATTRIBUTE_STYLE,
+                        ),
+                        RatingBar.builder(
+                          maxRating: 5,
+                          itemSize: 28,
+                          allowHalfRating: true,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (_, __) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            _attributes[index].value = (rating * 2).toInt();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
               )
             ],
           ),
@@ -174,40 +207,6 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
-  List<Widget> _movieAttributes() {
-    return movie_attributes
-        .map(
-          (attribute) => Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  attribute.name,
-                  style: MOVIE_ATTRIBUTE_STYLE,
-                ),
-                RatingBar.builder(
-                  maxRating: 5,
-                  itemSize: 28,
-                  allowHalfRating: true,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    _attributes
-                        .firstWhere((element) => element.name == attribute.name)
-                        .value = (rating * 2).toInt();
-                  },
-                ),
-              ],
-            ),
-          ),
-        )
-        .toList();
-  }
-
   Future<void> _chooseImageFromGallery() async {
     _file = await _picker.pickImage(source: ImageSource.gallery);
     if (mounted) setState(() {});
@@ -257,8 +256,15 @@ class _MovieDialogState extends State<MovieDialog> {
         .doc(docName)
         .set(jsonDecode(jsonEncode(movie.toJson())));
 
+    // _resetAttributes();
     if (mounted) Navigator.of(context).pop();
   }
+
+  // void _resetAttributes() {
+  //   for (var i = 0; i < _attributes.length; i++) {
+  //     _attributes[i].value = 0;
+  //   }
+  // }
 
   @override
   void dispose() {

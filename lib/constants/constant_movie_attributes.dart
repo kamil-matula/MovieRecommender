@@ -1,6 +1,6 @@
 import 'package:movie_recommender/models/movie_attribute.dart';
 
-final List<MovieAttribute> movie_attributes = [
+List<MovieAttribute> movie_attributes() => [
   MovieAttribute(name: 'Funny'),
   MovieAttribute(name: 'Scary'),
   MovieAttribute(name: 'Touching'),

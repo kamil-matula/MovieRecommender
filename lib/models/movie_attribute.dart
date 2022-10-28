@@ -12,8 +12,8 @@ class MovieAttribute {
     this.value = 0,
   });
 
-  factory MovieAttribute.fromJson(Map<String, dynamic> json) => _$MovieAttributeFromJson(json);
+  factory MovieAttribute.fromJson(Map<String, dynamic> json) =>
+      _$MovieAttributeFromJson(json);
 
-  /// Connect the generated [_$MovieAttributeToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$MovieAttributeToJson(this);
 }

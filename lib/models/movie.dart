@@ -23,6 +23,5 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
-  /// Connect the generated [_$MovieToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$MovieToJson(this);
 }
