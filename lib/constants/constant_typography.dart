@@ -22,3 +22,9 @@ const TextStyle MOVIE_SUB_HEADER_STYLE = TextStyle(
   color: Color(0xff5d5d5d),
   fontStyle: FontStyle.italic,
 );
+
+const TextStyle MOVIE_ATTRIBUTE_STYLE = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: Color(0xff2f2f2f),
+);
