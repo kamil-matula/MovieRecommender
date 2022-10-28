@@ -14,13 +14,13 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 60,
+      height: 50,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w300),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
         ),
       ),
     );

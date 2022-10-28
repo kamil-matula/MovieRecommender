@@ -1,5 +1,5 @@
-import 'package:movie_recommender/models/movie_attribute.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_recommender/models/movie_attribute.dart';
 
 part 'movie.g.dart';
 

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +15,7 @@ import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
+import 'package:movie_recommender/view/widgets/input_field.dart';
 
 // TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {
@@ -48,15 +48,34 @@ class _MovieDialogState extends State<MovieDialog> {
           child: Column(
             children: [
               _imageContainer(),
-              _textField(MOVIE_TITLE, 300, _titleController, 50),
-              _textField(DIRECTOR, 300, _directorController, 50),
+              const SizedBox(height: 15),
+              CustomInputField(
+                controller: _titleController,
+                labelText: MOVIE_TITLE,
+                lengthLimit: 200,
+              ),
+              const SizedBox(height: 15),
+              CustomInputField(
+                controller: _directorController,
+                labelText: DIRECTOR,
+              ),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _textFieldDigitOnly(YEAR, 80, _yearController),
+                  CustomInputField(
+                    controller: _yearController,
+                    labelText: YEAR,
+                    width: 120,
+                    lengthLimit: 4,
+                    digitOnly: true,
+                  ),
                   _dropdown(),
                 ],
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(MOVIE_ATTRIBUTES, style: MOVIE_HEADER_STYLE),
               ),
               Column(
                 children: _movieAttributes(),
@@ -151,41 +170,6 @@ class _MovieDialogState extends State<MovieDialog> {
             if (mounted) setState(() {});
           },
         ),
-      ),
-    );
-  }
-
-  Widget _textField(
-    String label,
-    double width,
-    TextEditingController textEditingController,
-    int lengthLimit,
-  ) {
-    return SizedBox(
-      width: width,
-      child: TextFormField(
-        controller: textEditingController,
-        decoration: InputDecoration(labelText: label),
-        inputFormatters: [LengthLimitingTextInputFormatter(lengthLimit)],
-      ),
-    );
-  }
-
-  Widget _textFieldDigitOnly(
-    String label,
-    double width,
-    TextEditingController textEditingController,
-  ) {
-    return SizedBox(
-      width: width,
-      child: TextFormField(
-        controller: textEditingController,
-        decoration: InputDecoration(labelText: label),
-        keyboardType: const TextInputType.numberWithOptions(),
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[0-9]+')),
-          LengthLimitingTextInputFormatter(4)
-        ],
       ),
     );
   }
