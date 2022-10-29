@@ -11,10 +11,17 @@ import 'package:movie_recommender/constants/constant_colors.dart';
 import 'package:movie_recommender/constants/constant_genres.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
-// TODO: Prepare cubit for this dialog (changing image and adding movie)
 class EditMovieDialog extends StatefulWidget {
-  const EditMovieDialog({Key? key}) : super(key: key);
+
+  final Movie movie;
+
+  const EditMovieDialog({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
+
 
   @override
   State<EditMovieDialog> createState() => _EditMovieDialogState();
@@ -29,10 +36,16 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _directorController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
-  String selectedGenre = genres.first;
+  String selectedGenre = '';
 
   @override
   Widget build(BuildContext context) {
+    _titleController.text = widget.movie.title;
+    _directorController.text = widget.movie.director;
+    _yearController.text = widget.movie.year.toString();
+    if (selectedGenre == '') {
+        selectedGenre = widget.movie.genre;
+    }
     return AlertDialog(
       title: const Text(EDIT_MOVIE, textAlign: TextAlign.center),
       content: SizedBox(
@@ -71,13 +84,31 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
   }
 
   Widget _imageContainer() {
+    String? poster = widget.movie.url;
     return GestureDetector(
       onTap: _chooseImageFromGallery,
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: _file != null
+            child:
+            poster != null && _file == null
+                ?  OptimizedCacheImage(
+              imageUrl: poster,
+              width: 100,
+              height: 140,
+              imageBuilder: (_, imageProvider) {
+                return Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ):
+            _file != null
                 ? Image.file(
               File(_file!.path),
               height: 140,
@@ -86,7 +117,7 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
             )
                 : Image.asset(
               PLACEHOLDER,
-              height: 140.0,
+              height: 140,
               width: 100,
               fit: BoxFit.cover,
             ),
@@ -124,21 +155,16 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
         ),
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
+        child: DropdownButton(
           alignment: AlignmentDirectional.center,
           value: selectedGenre,
-          items: genres.map<DropdownMenuItem<String>>(
-                (String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            },
-          ).toList(),
-          onChanged: (String? value) {
-            selectedGenre = value.toString();
-            if (mounted) setState(() {});
-          },
+          items: genres.map((item) => DropdownMenuItem<String>(
+            value: item,
+            child: Text(item),
+          ),).toList(),
+          onChanged: (selectedItem) => setState(() {
+            selectedGenre = selectedItem!;
+          }),
         ),
       ),
     );
@@ -187,6 +213,7 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
   Future<void> _addMovie() async {
     String title = _titleController.text;
     String director = _directorController.text;
+    String id = widget.movie.id;
     int? year = int.tryParse(_yearController.text);
     String? url;
 
@@ -199,12 +226,11 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
     }
 
     // Upload poster to Firebase Storage:
-    String docName = '${title}_$year';
     if (_file != null) {
       TaskSnapshot snapshot = await FirebaseStorage.instance
           .ref()
           .child('posters')
-          .child('$docName.jpg')
+          .child('$id.jpg')
           .putFile(
         File(_file!.path),
         SettableMetadata(contentType: 'image/jpeg'),
@@ -214,18 +240,19 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
 
     // Prepare object:
     Movie movie = Movie(
+      id: id,
       title: title,
       director: director,
       genre: selectedGenre,
       year: year,
-      url: url,
+      url: _file != null ? url : widget.movie.url,
     );
 
-    // Save object in Firestore Database:
+    // Update object in Firestore Database:
     FirebaseFirestore.instance
         .collection('movies')
-        .doc(docName)
-        .set(movie.toJson());
+        .doc(id)
+        .update(movie.toJson());
 
     if (mounted) Navigator.of(context).pop();
   }

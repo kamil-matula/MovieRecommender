@@ -3,7 +3,7 @@ import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
-import 'package:movie_recommender/view/main_page/widgets/edit_movie_dialog.dart';
+import 'package:movie_recommender/view/movie_dialog/edit_movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class MovieItem extends StatefulWidget {
@@ -94,7 +94,7 @@ class _MovieItemState extends State<MovieItem> {
                       onPressed: () async {
                         showDialog(
                           context: context,
-                          builder: (_) => const EditMovieDialog(),
+                          builder: (_) => EditMovieDialog(movie: widget.movie),
                         );
                       },
                       child: const Text(EDIT),
