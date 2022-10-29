@@ -1,4 +1,5 @@
 class Movie {
+  final String id;
   final String title;
   final String director;
   final String genre;
@@ -6,6 +7,7 @@ class Movie {
   final String? url;
 
   Movie({
+    required this.id,
     required this.title,
     required this.director,
     required this.genre,
@@ -15,6 +17,7 @@ class Movie {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'director': director,
       'genre': genre,
@@ -25,6 +28,7 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> map) {
     return Movie(
+      id: map['id'] as String,
       title: map['title'] as String,
       director: map['director'] as String,
       genre: map['genre'] as String,

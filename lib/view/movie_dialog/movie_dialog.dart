@@ -214,6 +214,7 @@ class _MovieDialogState extends State<MovieDialog> {
 
     // Prepare object:
     Movie movie = Movie(
+      id: docName,
       title: title,
       director: director,
       genre: selectedGenre,
