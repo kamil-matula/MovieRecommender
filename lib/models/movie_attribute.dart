@@ -6,9 +6,11 @@ part 'movie_attribute.g.dart';
 class MovieAttribute {
   final String name;
   final int value;
+  final String? description;
 
   const MovieAttribute({
     required this.name,
+    this.description,
     this.value = 0,
   });
 
@@ -19,10 +21,12 @@ class MovieAttribute {
 
   MovieAttribute copyWith({
     String? name,
+    String? description,
     int? value,
   }) {
     return MovieAttribute(
       name: name ?? this.name,
+      description: description ?? this.description,
       value: value ?? this.value,
     );
   }
