@@ -23,7 +23,7 @@ class _MovieItemState extends State<MovieItem> {
 
   @override
   Widget build(BuildContext context) {
-    String? image_url = widget.movie.url;
+    String? image_url = widget.movie.poster_url;
     return GestureDetector(
       onTap: () {
         isExpanded = !isExpanded;

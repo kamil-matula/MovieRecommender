@@ -84,7 +84,7 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
   }
 
   Widget _imageContainer() {
-    String? poster = widget.movie.url;
+    String? poster = widget.movie.poster_url;
     return GestureDetector(
       onTap: _chooseImageFromGallery,
       child: Stack(
@@ -245,7 +245,7 @@ class _EditMovieDialogState extends State<EditMovieDialog> {
       director: director,
       genre: selectedGenre,
       year: year,
-      url: _file != null ? url : widget.movie.url,
+      poster_url: _file != null ? url : widget.movie.poster_url,
     );
 
     // Update object in Firestore Database:
