@@ -34,8 +34,8 @@ class _MovieDialogState extends State<MovieDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _directorController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
+  final List<MovieAttribute> _attributes = movie_attributes.toList();
   String _selectedGenre = genres.first;
-  final List<MovieAttribute> _attributes = movie_attributes();
 
   @override
   Widget build(BuildContext context) {
@@ -194,12 +194,11 @@ class _MovieDialogState extends State<MovieDialog> {
             itemSize: 28,
             allowHalfRating: true,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (_, __) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
+            itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
             onRatingUpdate: (rating) {
-              _attributes[index].value = (rating * 2).toInt();
+              _attributes[index] = _attributes[index].copyWith(
+                value: (rating * 2).toInt(),
+              );
             },
           ),
         ],

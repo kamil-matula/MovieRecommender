@@ -5,9 +5,9 @@ part 'movie_attribute.g.dart';
 @JsonSerializable()
 class MovieAttribute {
   final String name;
-  int value;
+  final int value;
 
-  MovieAttribute({
+  const MovieAttribute({
     required this.name,
     this.value = 0,
   });
@@ -16,4 +16,14 @@ class MovieAttribute {
       _$MovieAttributeFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieAttributeToJson(this);
+
+  MovieAttribute copyWith({
+    String? name,
+    int? value,
+  }) {
+    return MovieAttribute(
+      name: name ?? this.name,
+      value: value ?? this.value,
+    );
+  }
 }
