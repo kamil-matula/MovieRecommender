@@ -22,7 +22,10 @@ import 'package:optimized_cached_image/optimized_cached_image.dart';
 class MovieDialog extends StatefulWidget {
   final Movie? movie;
 
-  const MovieDialog({Key? key, this.movie,}) : super(key: key);
+  const MovieDialog({
+    Key? key,
+    this.movie,
+  }) : super(key: key);
 
   @override
   State<MovieDialog> createState() => _MovieDialogState();
@@ -34,16 +37,20 @@ class _MovieDialogState extends State<MovieDialog> {
   XFile? _file;
 
   // Details:
-  late final TextEditingController _titleController = TextEditingController(text: widget.movie?.title);
-  late final TextEditingController _directorController = TextEditingController(text: widget.movie?.director);
-  late final TextEditingController _yearController = TextEditingController(text: widget.movie?.year.toString());
-  late final List<MovieAttribute> _attributes = movie_attributes.toList();
+  late final TextEditingController _titleController =
+      TextEditingController(text: widget.movie?.title);
+  late final TextEditingController _directorController =
+      TextEditingController(text: widget.movie?.director);
+  late final TextEditingController _yearController =
+      TextEditingController(text: widget.movie?.year.toString());
+  late final List<MovieAttribute?> _attributes = widget.movie?.attributes ?? movie_attributes.toList();
   late String _selectedGenre = widget.movie?.genre ?? genres.first;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(ADD_NEW_MOVIE, textAlign: TextAlign.center),
+      title: Text(widget.movie?.title != null ? EDIT_MOVIE : ADD_NEW_MOVIE,
+          textAlign: TextAlign.center,),
       content: SizedBox(
         width: 300,
         height: 600,
@@ -116,36 +123,35 @@ class _MovieDialogState extends State<MovieDialog> {
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child:
-            poster != null && _file == null
-                ?  OptimizedCacheImage(
-              imageUrl: poster,
-              width: 100,
-              height: 140,
-              imageBuilder: (_, imageProvider) {
-                return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ):
-            _file != null
-                ? Image.file(
-              File(_file!.path),
-              height: 140,
-              width: 100,
-              fit: BoxFit.cover,
-            )
-                : Image.asset(
-              PLACEHOLDER,
-              height: 140,
-              width: 100,
-              fit: BoxFit.cover,
-            ),
+            child: poster != null && _file == null
+                ? OptimizedCacheImage(
+                    imageUrl: poster,
+                    width: 100,
+                    height: 140,
+                    imageBuilder: (_, imageProvider) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                : _file != null
+                    ? Image.file(
+                        File(_file!.path),
+                        height: 140,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        PLACEHOLDER,
+                        height: 140,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
           ),
           Positioned(
             right: 0,
@@ -207,7 +213,7 @@ class _MovieDialogState extends State<MovieDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            _attributes[index].name,
+            _attributes[index]!.name,
             style: MOVIE_ATTRIBUTE_STYLE,
           ),
           RatingBar.builder(
@@ -217,10 +223,11 @@ class _MovieDialogState extends State<MovieDialog> {
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
             onRatingUpdate: (rating) {
-              _attributes[index] = _attributes[index].copyWith(
+              _attributes[index] = _attributes[index]?.copyWith(
                 value: (rating * 2).toInt(),
               );
             },
+            initialRating: _attributes[index]!.value.toDouble()/ 2,
           ),
         ],
       ),
