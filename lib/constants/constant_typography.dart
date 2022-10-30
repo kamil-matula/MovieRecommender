@@ -28,3 +28,9 @@ const TextStyle MOVIE_ATTRIBUTE_STYLE = TextStyle(
   fontWeight: FontWeight.w400,
   color: Color(0xff2f2f2f),
 );
+
+const TextStyle MOVIE_PREFERENCE_STYLE = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+  color: Color(0xff000000),
+);
