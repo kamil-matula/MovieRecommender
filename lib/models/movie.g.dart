@@ -14,8 +14,9 @@ Movie _$MovieFromJson(Map<String, dynamic> json) => Movie(
       year: json['year'] as int,
       poster_url: json['poster_url'] as String?,
       attributes: (json['attributes'] as List<dynamic>?)
-          ?.map((e) => MovieAttribute.fromJson(e as Map<String, dynamic>))
-          .toList(),
+              ?.map((e) => MovieAttribute.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$MovieToJson(Movie instance) => <String, dynamic>{

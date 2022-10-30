@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_recommender/constants/constant_movie_attributes.dart';
@@ -6,6 +10,7 @@ import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
+import 'package:movie_recommender/models/user.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 
 class MyPreferencesTab extends StatefulWidget {
@@ -16,8 +21,18 @@ class MyPreferencesTab extends StatefulWidget {
 }
 
 class _MyPreferencesTabState extends State<MyPreferencesTab> {
+  final DocumentReference<Map<String, dynamic>> ref = FirebaseFirestore.instance
+      .collection('users')
+      .doc(auth.FirebaseAuth.instance.currentUser?.uid ?? '');
+
   final List<MovieAttribute> _userPreferences =
       movie_attributes.map((e) => e.copyWith(value: 5)).toList();
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_createUserInDb());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +99,23 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
     );
   }
 
+  Future<void> _createUserInDb() async {
+    // Prepare data:
+    String email = auth.FirebaseAuth.instance.currentUser?.email ?? '';
+    List<MovieAttribute> preferences =
+        movie_attributes.map((e) => e.copyWith(value: 5)).toList();
+    if (email.isEmpty) return;
+
+    // Get user's object from Firestore Database:
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await ref.get();
+    if (snapshot.data() != null) return;
+
+    // Save object in Firestore Database:
+    User user = User(email: email, preferences: preferences);
+    ref.set(jsonDecode(jsonEncode(user.toJson())));
+  }
+
+  /// Uses kNN to get k nearest movies.
   Future<void> _getMatchingMovies() async {
     // Get movies:
     QuerySnapshot<Map<String, dynamic>> snapshot =
@@ -114,13 +146,12 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
   /// and user's preferences with usage of Manhattan's metric.
   int _calculateDistance(Movie movie) {
     // If there is no attributes, the movie is very far from perfect match:
-    if (movie.attributes == null) return 1000;
-    List<MovieAttribute> movieAttributes = movie.attributes!;
+    if (movie.attributes.isEmpty) return 1000;
 
     // Let's assume that attributes here and in database have the same order:
     int distance = 0;
-    for (int i = 0; i < movieAttributes.length; i++) {
-      distance += (movieAttributes[i].value - _userPreferences[i].value).abs();
+    for (int i = 0; i < movie.attributes.length; i++) {
+      distance += (movie.attributes[i].value - _userPreferences[i].value).abs();
     }
 
     return distance;
