@@ -94,10 +94,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
         snapshot.docs.map((movie) => Movie.fromJson(movie.data())).toList();
 
     // Calculate distances:
-    Map<int, int> distances = {};
-    for (int i = 0; i < movies.length; i++) {
-      distances[i] = _calculateDistance(movies[i]);
-    }
+Map<int, int> distances = movies.map((movie) => _calculateDistance(movie)).toList().asMap();
 
     // Get K nearest movies:
     int k = 2;
