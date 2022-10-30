@@ -43,9 +43,11 @@ class _MovieDialogState extends State<MovieDialog> {
       TextEditingController(text: widget.movie?.director);
   late final TextEditingController _yearController =
       TextEditingController(text: widget.movie?.year.toString());
+  late String _selectedGenre = widget.movie?.genre ?? genres.first;
+
+  // Stars:
   late final List<MovieAttribute> _attributes =
       widget.movie?.attributes ?? movie_attributes.toList();
-  late String _selectedGenre = widget.movie?.genre ?? genres.first;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,22 @@ class _MovieDialogState extends State<MovieDialog> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _imageContainer(),
+              GestureDetector(
+                onTap: _chooseImageFromGallery,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: _poster(),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: _editIcon(),
+                    )
+                  ],
+                ),
+              ),
               const SizedBox(height: 15),
               CustomInputField(
                 controller: _titleController,
@@ -118,62 +135,55 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
-  Widget _imageContainer() {
+  Widget _poster() {
+    if (_file != null) {
+      return Image.file(
+        File(_file!.path),
+        height: 140,
+        width: 100,
+        fit: BoxFit.cover,
+      );
+    }
+
     String? poster = widget.movie?.poster_url;
-    return GestureDetector(
-      onTap: _chooseImageFromGallery,
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: poster != null && _file == null
-                ? OptimizedCacheImage(
-                    imageUrl: poster,
-                    width: 100,
-                    height: 140,
-                    imageBuilder: (_, imageProvider) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : _file != null
-                    ? Image.file(
-                        File(_file!.path),
-                        height: 140,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        PLACEHOLDER,
-                        height: 140,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      ),
-          ),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: Colors.blue,
-              ),
-              width: 30.0,
-              height: 30.0,
-              child: const Icon(
-                Icons.edit,
-                color: Colors.white,
-                size: 17.5,
+    if (poster != null) {
+      return OptimizedCacheImage(
+        imageUrl: poster,
+        height: 140,
+        width: 100,
+        imageBuilder: (_, imageProvider) {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
               ),
             ),
-          )
-        ],
+          );
+        },
+      );
+    }
+
+    return Image.asset(
+      PLACEHOLDER,
+      height: 140,
+      width: 100,
+      fit: BoxFit.cover,
+    );
+  }
+
+  Widget _editIcon() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Colors.blue,
+      ),
+      width: 30.0,
+      height: 30.0,
+      child: const Icon(
+        Icons.edit,
+        color: Colors.white,
+        size: 17.5,
       ),
     );
   }
@@ -246,8 +256,6 @@ class _MovieDialogState extends State<MovieDialog> {
     String title = _titleController.text;
     String director = _directorController.text;
     int? year = int.tryParse(_yearController.text);
-    String? poster_url;
-    String id = widget.movie?.id ?? '${title}_$year';
 
     if (title.isEmpty || director.isEmpty || year == null) {
       Fluttertoast.showToast(
@@ -256,6 +264,9 @@ class _MovieDialogState extends State<MovieDialog> {
       );
       return;
     }
+
+    String id = widget.movie?.id ?? '${title}_$year';
+    String? poster_url = widget.movie?.poster_url;
 
     // Upload poster to Firebase Storage:
     if (_file != null) {
@@ -277,7 +288,7 @@ class _MovieDialogState extends State<MovieDialog> {
       director: director,
       genre: _selectedGenre,
       year: year,
-      poster_url: poster_url ?? widget.movie?.poster_url,
+      poster_url: poster_url,
       attributes: _attributes,
     );
 
@@ -287,7 +298,6 @@ class _MovieDialogState extends State<MovieDialog> {
         .doc(id)
         .set(jsonDecode(jsonEncode(movie.toJson())));
 
-    // _resetAttributes();
     if (mounted) Navigator.of(context).pop();
   }
 
