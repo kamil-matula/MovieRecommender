@@ -10,7 +10,7 @@ class Movie {
   final String genre;
   final int year;
   final String? poster_url;
-  final List<MovieAttribute?>? attributes;
+  final List<MovieAttribute>? attributes;
 
   Movie({
     required this.title,
