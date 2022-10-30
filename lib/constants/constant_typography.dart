@@ -40,5 +40,3 @@ const TextStyle EDIT_STYLE = TextStyle(
   fontWeight: FontWeight.w400,
   color: Color(0xff000000),
 );
-
-

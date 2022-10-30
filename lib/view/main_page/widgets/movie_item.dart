@@ -94,9 +94,9 @@ class _MovieItemState extends State<MovieItem> {
                                         MovieDialog(movie: widget.movie),
                                   );
                                 },
-                                child: Row(children: const [Icon(Icons.edit)]),
+                                child: const Icon(Icons.edit),
                               ),
-                            ]),
+                            ],),
                       ],
                     ),
                   ),
