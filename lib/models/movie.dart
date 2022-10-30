@@ -11,7 +11,7 @@ class Movie {
   final String genre;
   final int year;
   final String? poster_url;
-  final List<MovieAttribute>? attributes;
+  final List<MovieAttribute> attributes;
 
   Movie({
     required this.id,
@@ -20,8 +20,9 @@ class Movie {
     required this.genre,
     required this.year,
     this.poster_url,
-    this.attributes,
+    this.attributes = const [],
   });
+
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieToJson(this);
