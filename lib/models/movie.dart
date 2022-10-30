@@ -5,6 +5,7 @@ part 'movie.g.dart';
 
 @JsonSerializable()
 class Movie {
+  final String id;
   final String title;
   final String director;
   final String genre;
@@ -13,6 +14,7 @@ class Movie {
   final List<MovieAttribute>? attributes;
 
   Movie({
+    required this.id,
     required this.title,
     required this.director,
     required this.genre,
@@ -20,7 +22,6 @@ class Movie {
     this.poster_url,
     this.attributes,
   });
-
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieToJson(this);

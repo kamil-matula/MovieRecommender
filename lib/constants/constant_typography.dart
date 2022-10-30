@@ -34,3 +34,9 @@ const TextStyle MOVIE_PREFERENCE_STYLE = TextStyle(
   fontWeight: FontWeight.w400,
   color: Color(0xff000000),
 );
+
+const TextStyle EDIT_STYLE = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  color: Color(0xff000000),
+);

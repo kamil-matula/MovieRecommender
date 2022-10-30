@@ -3,6 +3,7 @@ import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class MovieItem extends StatefulWidget {
@@ -57,8 +58,8 @@ class _MovieItemState extends State<MovieItem> {
                         fit: BoxFit.cover,
                       ),
                 Container(
-                  constraints:
-                      const BoxConstraints(maxWidth: 250, minHeight: 140),
+                  width: 260,
+                  constraints: const BoxConstraints(minHeight: 140),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -71,14 +72,35 @@ class _MovieItemState extends State<MovieItem> {
                           maxLines: 3,
                           style: MOVIE_TITLE_STYLE,
                         ),
-                        Text(
-                          widget.movie.year.toString(),
-                          style: MOVIE_HEADER_STYLE,
-                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.movie.year.toString(),
+                                style: MOVIE_HEADER_STYLE,
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: const Color(0x4D3589EC),
+                                  textStyle: const TextStyle(fontSize: 20),
+                                  shape: const CircleBorder(),
+                                  padding: const EdgeInsets.all(10),
+                                ),
+                                onPressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                        MovieDialog(movie: widget.movie),
+                                  );
+                                },
+                                child: const Icon(Icons.edit),
+                              ),
+                            ],),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
 
