@@ -274,7 +274,7 @@ class _MovieDialogState extends State<MovieDialog> {
       director: director,
       genre: _selectedGenre,
       year: year,
-      poster_url: _file != null ? poster_url : widget.movie?.poster_url,
+      poster_url: poster_url ?? widget.movie?.poster_url,
       attributes: _attributes,
     );
 
