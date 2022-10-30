@@ -16,10 +16,13 @@ import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 // TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {
-  const MovieDialog({Key? key}) : super(key: key);
+  final Movie? movie;
+
+  const MovieDialog({Key? key, this.movie,}) : super(key: key);
 
   @override
   State<MovieDialog> createState() => _MovieDialogState();
@@ -31,11 +34,11 @@ class _MovieDialogState extends State<MovieDialog> {
   XFile? _file;
 
   // Details:
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _directorController = TextEditingController();
-  final TextEditingController _yearController = TextEditingController();
-  final List<MovieAttribute> _attributes = movie_attributes.toList();
-  String _selectedGenre = genres.first;
+  late final TextEditingController _titleController = TextEditingController(text: widget.movie?.title);
+  late final TextEditingController _directorController = TextEditingController(text: widget.movie?.director);
+  late final TextEditingController _yearController = TextEditingController(text: widget.movie?.year.toString());
+  late final List<MovieAttribute> _attributes = movie_attributes.toList();
+  late String _selectedGenre = widget.movie?.genre ?? genres.first;
 
   @override
   Widget build(BuildContext context) {
@@ -106,25 +109,43 @@ class _MovieDialogState extends State<MovieDialog> {
   }
 
   Widget _imageContainer() {
+    String? poster = widget.movie?.poster_url;
     return GestureDetector(
       onTap: _chooseImageFromGallery,
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: _file != null
-                ? Image.file(
-                    File(_file!.path),
-                    height: 140,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    PLACEHOLDER,
-                    height: 140.0,
-                    width: 100,
-                    fit: BoxFit.cover,
+            child:
+            poster != null && _file == null
+                ?  OptimizedCacheImage(
+              imageUrl: poster,
+              width: 100,
+              height: 140,
+              imageBuilder: (_, imageProvider) {
+                return Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
+                );
+              },
+            ):
+            _file != null
+                ? Image.file(
+              File(_file!.path),
+              height: 140,
+              width: 100,
+              fit: BoxFit.cover,
+            )
+                : Image.asset(
+              PLACEHOLDER,
+              height: 140,
+              width: 100,
+              fit: BoxFit.cover,
+            ),
           ),
           Positioned(
             right: 0,
@@ -216,6 +237,7 @@ class _MovieDialogState extends State<MovieDialog> {
     String director = _directorController.text;
     int? year = int.tryParse(_yearController.text);
     String? poster_url;
+    String id = widget.movie?.id ?? '${title}_$year';
 
     if (title.isEmpty || director.isEmpty || year == null) {
       Fluttertoast.showToast(
@@ -226,12 +248,11 @@ class _MovieDialogState extends State<MovieDialog> {
     }
 
     // Upload poster to Firebase Storage:
-    String docName = '${title}_$year';
     if (_file != null) {
       TaskSnapshot snapshot = await FirebaseStorage.instance
           .ref()
           .child('posters')
-          .child('$docName.jpg')
+          .child('$id.jpg')
           .putFile(
             File(_file!.path),
             SettableMetadata(contentType: 'image/jpeg'),
@@ -241,19 +262,19 @@ class _MovieDialogState extends State<MovieDialog> {
 
     // Prepare object:
     Movie movie = Movie(
-      id: docName,
+      id: id,
       title: title,
       director: director,
       genre: _selectedGenre,
       year: year,
-      poster_url: poster_url,
+      poster_url: _file != null ? poster_url : widget.movie?.poster_url,
       attributes: _attributes,
     );
 
     // Save object in Firestore Database:
     FirebaseFirestore.instance
         .collection('movies')
-        .doc(docName)
+        .doc(id)
         .set(jsonDecode(jsonEncode(movie.toJson())));
 
     // _resetAttributes();
