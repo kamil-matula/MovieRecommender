@@ -56,7 +56,6 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(35, 15, 35, 5),
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             width: 350,
@@ -67,7 +66,6 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
           ),
           RatingBar.builder(
             maxRating: 5,
-            itemSize: 40,
             allowHalfRating: true,
             initialRating: 2.5,
             itemPadding:
