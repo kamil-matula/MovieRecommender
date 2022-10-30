@@ -60,7 +60,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
           SizedBox(
             width: 350,
             child: Text(
-              _attributes[index].description!,
+              _attributes[index].description ?? '',
               style: MOVIE_PREFERENCE_STYLE,
             ),
           ),
