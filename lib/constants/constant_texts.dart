@@ -17,4 +17,5 @@ const String EDIT = 'Edit';
 const String EDIT_MOVIE = 'Edit movie';
 const String MOVIE_ATTRIBUTES = 'Movie attributes:';
 const String MATCH_MOVIES = 'Match movies';
-const String MATCH_MOVIES_HEADER = 'To adjust the movies, set your preferences on a scale of 0-10';
+const String MATCH_MOVIES_HEADER =
+    'To adjust the movies, set your preferences on a scale of 0-10';

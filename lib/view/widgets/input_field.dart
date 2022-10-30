@@ -42,8 +42,7 @@ class CustomInputField extends StatelessWidget {
           focusedBorder: _createBorderStyle(),
           fillColor: FORM_BACKGROUND_COLOR,
           filled: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           labelText: labelText,
           labelStyle: const TextStyle(
             fontSize: 17,

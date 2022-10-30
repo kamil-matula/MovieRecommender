@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -94,7 +92,8 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
         snapshot.docs.map((movie) => Movie.fromJson(movie.data())).toList();
 
     // Calculate distances:
-Map<int, int> distances = movies.map((movie) => _calculateDistance(movie)).toList().asMap();
+    Map<int, int> distances =
+        movies.map((movie) => _calculateDistance(movie)).toList().asMap();
 
     // Get K nearest movies:
     int k = 2;

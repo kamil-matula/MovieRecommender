@@ -73,30 +73,31 @@ class _MovieItemState extends State<MovieItem> {
                           style: MOVIE_TITLE_STYLE,
                         ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                widget.movie.year.toString(),
-                                style: MOVIE_HEADER_STYLE,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.movie.year.toString(),
+                              style: MOVIE_HEADER_STYLE,
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.black,
+                                backgroundColor: const Color(0x4D3589EC),
+                                textStyle: const TextStyle(fontSize: 20),
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(10),
                               ),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                  backgroundColor: const Color(0x4D3589EC),
-                                  textStyle: const TextStyle(fontSize: 20),
-                                  shape: const CircleBorder(),
-                                  padding: const EdgeInsets.all(10),
-                                ),
-                                onPressed: () async {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) =>
-                                        MovieDialog(movie: widget.movie),
-                                  );
-                                },
-                                child: const Icon(Icons.edit),
-                              ),
-                            ],),
+                              onPressed: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) =>
+                                      MovieDialog(movie: widget.movie),
+                                );
+                              },
+                              child: const Icon(Icons.edit),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

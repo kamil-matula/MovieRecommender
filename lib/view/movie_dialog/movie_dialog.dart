@@ -43,14 +43,17 @@ class _MovieDialogState extends State<MovieDialog> {
       TextEditingController(text: widget.movie?.director);
   late final TextEditingController _yearController =
       TextEditingController(text: widget.movie?.year.toString());
-  late final List<MovieAttribute?> _attributes = widget.movie?.attributes ?? movie_attributes.toList();
+  late final List<MovieAttribute> _attributes =
+      widget.movie?.attributes ?? movie_attributes.toList();
   late String _selectedGenre = widget.movie?.genre ?? genres.first;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.movie?.title != null ? EDIT_MOVIE : ADD_NEW_MOVIE,
-          textAlign: TextAlign.center,),
+      title: Text(
+        widget.movie?.title != null ? EDIT_MOVIE : ADD_NEW_MOVIE,
+        textAlign: TextAlign.center,
+      ),
       content: SizedBox(
         width: 300,
         height: 600,
@@ -213,7 +216,7 @@ class _MovieDialogState extends State<MovieDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            _attributes[index]!.name,
+            _attributes[index].name,
             style: MOVIE_ATTRIBUTE_STYLE,
           ),
           RatingBar.builder(
@@ -223,11 +226,11 @@ class _MovieDialogState extends State<MovieDialog> {
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
             onRatingUpdate: (rating) {
-              _attributes[index] = _attributes[index]?.copyWith(
+              _attributes[index] = _attributes[index].copyWith(
                 value: (rating * 2).toInt(),
               );
             },
-            initialRating: _attributes[index]!.value.toDouble()/ 2,
+            initialRating: _attributes[index].value.toDouble() / 2,
           ),
         ],
       ),
