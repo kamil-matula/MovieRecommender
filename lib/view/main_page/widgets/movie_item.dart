@@ -104,8 +104,6 @@ class _MovieItemState extends State<MovieItem> {
                   ),
                 ),
                 Container(
-                  // padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                  alignment: Alignment.topRight,
                   constraints:
                       const BoxConstraints(maxWidth: 40, minHeight: 140),
                   child: Column(
