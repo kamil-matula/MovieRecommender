@@ -49,8 +49,9 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
           StreamBuilder(
             stream: userRef.snapshots(),
             builder: (_, snapshot) {
-              if (snapshot.hasData) {
-                User user = User.fromJson(snapshot.data!.data()!);
+              Map<String, dynamic>? data = snapshot.data?.data();
+              if (data != null) {
+                User user = User.fromJson(data);
                 return ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
