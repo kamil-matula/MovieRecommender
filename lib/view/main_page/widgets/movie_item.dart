@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
@@ -102,6 +103,30 @@ class _MovieItemState extends State<MovieItem> {
                     ),
                   ),
                 ),
+                Container(
+                  // padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                  alignment: Alignment.topRight,
+                  constraints:
+                      const BoxConstraints(maxWidth: 40, minHeight: 140),
+                  child: Column(
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: const CircleBorder(),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        onPressed: () async {
+                          FirebaseFirestore.instance
+                              .collection('movies')
+                              .doc(widget.movie.id)
+                              .delete();
+                        },
+                        child:
+                            const Icon(Icons.cancel, color: Color(0xFFD32F2F)),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
 
