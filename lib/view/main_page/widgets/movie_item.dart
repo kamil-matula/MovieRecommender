@@ -58,60 +58,40 @@ class _MovieItemState extends State<MovieItem> {
                         height: 140,
                         fit: BoxFit.cover,
                       ),
-                Container(
-                  width: 260,
-                  constraints: const BoxConstraints(minHeight: 140),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.movie.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          style: MOVIE_TITLE_STYLE,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.movie.year.toString(),
-                              style: MOVIE_HEADER_STYLE,
-                            ),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.black,
-                                backgroundColor: const Color(0x4D3589EC),
-                                textStyle: const TextStyle(fontSize: 20),
-                                shape: const CircleBorder(),
-                                padding: const EdgeInsets.all(10),
-                              ),
-                              onPressed: () async {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) =>
-                                      MovieDialog(movie: widget.movie),
-                                );
-                              },
-                              child: const Icon(Icons.edit),
-                            ),
-                          ],
-                        ),
-                      ],
+                Expanded(
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 140),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.movie.title,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            style: MOVIE_TITLE_STYLE,
+                          ),
+                          Text(
+                            widget.movie.year.toString(),
+                            style: MOVIE_HEADER_STYLE,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 Container(
-                  constraints:
-                      const BoxConstraints(maxWidth: 40, minHeight: 140),
+                  width: 40,
+                  constraints: const BoxConstraints(minHeight: 140),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          shape: const CircleBorder(),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      IconButton(
+                        icon: const Icon(
+                          Icons.cancel,
+                          color: Color(0xFFD32F2F),
                         ),
                         onPressed: () async {
                           FirebaseFirestore.instance
@@ -119,8 +99,30 @@ class _MovieItemState extends State<MovieItem> {
                               .doc(widget.movie.id)
                               .delete();
                         },
-                        child:
-                            const Icon(Icons.cancel, color: Color(0xFFD32F2F)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0, right: 5.0),
+                        child: Ink(
+                          width: 34,
+                          decoration: const ShapeDecoration(
+                            color: Color(0x4D3589EC),
+                            shape: CircleBorder(),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.black,
+                              size: 22,
+                            ),
+                            onPressed: () async {
+                              showDialog(
+                                context: context,
+                                builder: (_) =>
+                                    MovieDialog(movie: widget.movie),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),

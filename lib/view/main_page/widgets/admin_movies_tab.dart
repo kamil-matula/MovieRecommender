@@ -16,14 +16,17 @@ class AdminMoviesTab extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       body: const ListOfMovies(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          showDialog(
-            context: context,
-            builder: (_) => const MovieDialog(),
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 20.0),
+        child: FloatingActionButton(
+          onPressed: () async {
+            showDialog(
+              context: context,
+              builder: (_) => const MovieDialog(),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
