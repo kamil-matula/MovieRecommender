@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/view/main_page/widgets/list_of_movies.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 

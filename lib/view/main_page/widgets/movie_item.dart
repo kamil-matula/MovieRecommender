@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
-import 'package:movie_recommender/models/movie_attribute.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
+
+import 'attribute_item.dart';
 
 class MovieItem extends StatefulWidget {
   final Movie movie;
@@ -153,7 +153,10 @@ class _MovieItemState extends State<MovieItem> {
                       shrinkWrap: true,
                       itemCount: widget.movie.attributes.length,
                       itemBuilder: (_, index) {
-                        return _attributeItem(widget.movie.attributes[index]);
+                        return AttributeItem(
+                          attribute: widget.movie.attributes[index],
+                          ignoreGestures: true,
+                        );
                       },
                     )
                   ],
@@ -172,31 +175,6 @@ class _MovieItemState extends State<MovieItem> {
         children: [
           Text(description, style: MOVIE_SUB_HEADER_STYLE),
           Text(value, style: MOVIE_HEADER_STYLE),
-        ],
-      ),
-    );
-  }
-
-  Widget _attributeItem(MovieAttribute attribute) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            attribute.name,
-            style: MOVIE_ATTRIBUTE_STYLE,
-          ),
-          RatingBar.builder(
-            maxRating: 5,
-            itemSize: 28,
-            allowHalfRating: true,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
-            onRatingUpdate: (_) {},
-            ignoreGestures: true,
-            initialRating: attribute.value.toDouble() / 2,
-          ),
         ],
       ),
     );
