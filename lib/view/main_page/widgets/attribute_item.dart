@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
 
-class AttributeItem extends StatefulWidget {
+class AttributeItem extends StatelessWidget {
   final MovieAttribute attribute;
   final bool ignoreGestures;
   final int index;
@@ -18,11 +18,6 @@ class AttributeItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AttributeItem> createState() => _AttributeItemState();
-}
-
-class _AttributeItemState extends State<AttributeItem> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
@@ -30,7 +25,7 @@ class _AttributeItemState extends State<AttributeItem> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            widget.attribute.name,
+            attribute.name,
             style: MOVIE_ATTRIBUTE_STYLE,
           ),
           RatingBar.builder(
@@ -39,13 +34,13 @@ class _AttributeItemState extends State<AttributeItem> {
             allowHalfRating: true,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
-            ignoreGestures: widget.ignoreGestures,
+            ignoreGestures: ignoreGestures,
             onRatingUpdate: (rating) {
-              if (widget.onRatingUpdate != null) {
-                widget.onRatingUpdate!(rating, widget.index);
+              if (onRatingUpdate != null) {
+                onRatingUpdate!(rating, index);
               }
             },
-            initialRating: widget.attribute.value.toDouble() / 2,
+            initialRating: attribute.value.toDouble() / 2,
           ),
         ],
       ),
