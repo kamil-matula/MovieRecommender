@@ -4,6 +4,7 @@ import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
@@ -134,10 +135,29 @@ class _MovieItemState extends State<MovieItem> {
             if (isExpanded)
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Row(
+                child: Column(
                   children: [
-                    _cell(DIRECTOR, widget.movie.director),
-                    _cell(GENRE, widget.movie.genre),
+                    Row(
+                      children: [
+                        _cell(DIRECTOR, widget.movie.director),
+                        _cell(GENRE, widget.movie.genre),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text(MOVIE_ATTRIBUTES, style: MOVIE_HEADER_STYLE),
+                    ),
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: widget.movie.attributes.length,
+                      itemBuilder: (_, index) {
+                        return AttributeItem(
+                          attribute: widget.movie.attributes[index],
+                          ignoreGestures: true,
+                        );
+                      },
+                    )
                   ],
                 ),
               )

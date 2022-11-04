@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
@@ -15,6 +14,7 @@ import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
+import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
@@ -112,7 +112,11 @@ class _MovieDialogState extends State<MovieDialog> {
                 shrinkWrap: true,
                 itemCount: _attributes.length,
                 itemBuilder: (_, index) {
-                  return _attributeItem(index);
+                  return AttributeItem(
+                    attribute: _attributes[index],
+                    onRatingUpdate: _onRatingUpdate,
+                    index: index,
+                  );
                 },
               )
             ],
@@ -219,32 +223,9 @@ class _MovieDialogState extends State<MovieDialog> {
     );
   }
 
-  Widget _attributeItem(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _attributes[index].name,
-            style: MOVIE_ATTRIBUTE_STYLE,
-          ),
-          RatingBar.builder(
-            maxRating: 5,
-            itemSize: 28,
-            allowHalfRating: true,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
-            onRatingUpdate: (rating) {
-              _attributes[index] = _attributes[index].copyWith(
-                value: (rating * 2).toInt(),
-              );
-            },
-            initialRating: _attributes[index].value.toDouble() / 2,
-          ),
-        ],
-      ),
-    );
+  void _onRatingUpdate(double rating, int index) {
+    _attributes[index] =
+        _attributes[index].copyWith(value: (rating * 2).toInt());
   }
 
   Future<void> _chooseImageFromGallery() async {
