@@ -4,10 +4,9 @@ import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
-
-import 'attribute_item.dart';
 
 class MovieItem extends StatefulWidget {
   final Movie movie;
