@@ -14,7 +14,7 @@ class AdminMoviesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
-      body: const ListOfMovies(),
+      body: const ListOfMovies(true),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 20.0),
         child: FloatingActionButton(

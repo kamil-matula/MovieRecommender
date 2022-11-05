@@ -4,7 +4,9 @@ import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/view/main_page/widgets/movie_item.dart';
 
 class ListOfMovies extends StatelessWidget {
-  const ListOfMovies({Key? key}) : super(key: key);
+  final bool isAdmin;
+
+  const ListOfMovies(this.isAdmin, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,10 @@ class ListOfMovies extends StatelessWidget {
               .toList();
           return ListView.builder(
             itemCount: movies.length,
-            itemBuilder: (_, int index) => MovieItem(movie: movies[index]),
+            itemBuilder: (_, int index) => MovieItem(
+              movie: movies[index],
+              isAdmin: isAdmin,
+            ),
           );
         }
 
