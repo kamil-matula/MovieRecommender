@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
+
+import '../../../constants/constant_colors.dart';
 
 class MovieItem extends StatefulWidget {
   final Movie movie;
@@ -25,6 +29,10 @@ class _MovieItemState extends State<MovieItem> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<PermissionCubit, bool?>(builder: _body);
+  }
+
+  Widget _body(BuildContext context, bool? isAdmin) {
     String? image_url = widget.movie.poster_url;
     return GestureDetector(
       onTap: () {
@@ -83,51 +91,55 @@ class _MovieItemState extends State<MovieItem> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 40,
-                  constraints: const BoxConstraints(minHeight: 140),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.cancel,
-                          color: Color(0xFFD32F2F),
-                        ),
-                        onPressed: () async {
-                          FirebaseFirestore.instance
-                              .collection('movies')
-                              .doc(widget.movie.id)
-                              .delete();
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0, right: 5.0),
-                        child: Ink(
-                          width: 34,
-                          decoration: const ShapeDecoration(
-                            color: Color(0x4D3589EC),
-                            shape: CircleBorder(),
+                if (isAdmin == true)
+                  Container(
+                    width: 40,
+                    constraints: const BoxConstraints(minHeight: 140),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: DELETE_COLOR,
                           ),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Colors.black,
-                              size: 22,
+                          onPressed: () async {
+                            FirebaseFirestore.instance
+                                .collection('movies')
+                                .doc(widget.movie.id)
+                                .delete();
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 5.0,
+                            right: 5.0,
+                          ),
+                          child: Ink(
+                            width: 34,
+                            decoration: const ShapeDecoration(
+                              color: FORM_BACKGROUND_COLOR,
+                              shape: CircleBorder(),
                             ),
-                            onPressed: () async {
-                              showDialog(
-                                context: context,
-                                builder: (_) =>
-                                    MovieDialog(movie: widget.movie),
-                              );
-                            },
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.black,
+                                size: 22,
+                              ),
+                              onPressed: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) =>
+                                      MovieDialog(movie: widget.movie),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                )
               ],
             ),
 
