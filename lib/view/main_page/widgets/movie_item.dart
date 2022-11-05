@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/constants/constant_assets.dart';
 import 'package:movie_recommender/constants/constant_colors.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
-import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class MovieItem extends StatefulWidget {
   final Movie movie;
+  final bool isAdmin;
 
   const MovieItem({
     Key? key,
     required this.movie,
+    required this.isAdmin,
   }) : super(key: key);
 
   @override
@@ -28,10 +28,6 @@ class _MovieItemState extends State<MovieItem> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionCubit, bool?>(builder: _body);
-  }
-
-  Widget _body(BuildContext context, bool? isAdmin) {
     String? image_url = widget.movie.poster_url;
     return GestureDetector(
       onTap: () {
@@ -90,7 +86,7 @@ class _MovieItemState extends State<MovieItem> {
                     ),
                   ),
                 ),
-                if (isAdmin == true)
+                if (widget.isAdmin)
                   Container(
                     width: 40,
                     constraints: const BoxConstraints(minHeight: 140),
