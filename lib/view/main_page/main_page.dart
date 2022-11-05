@@ -54,6 +54,7 @@ class MainPage extends StatelessWidget {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      title: const Text('Movie Recommender'),
       actions: [
         IconButton(
           onPressed: () async {
