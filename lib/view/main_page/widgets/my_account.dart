@@ -103,4 +103,12 @@ class _MyAccount extends State<MyAccount> {
       );
     });
   }
+
+  @override
+  void dispose() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    repeatPasswordController.dispose();
+    super.dispose();
+  }
 }
