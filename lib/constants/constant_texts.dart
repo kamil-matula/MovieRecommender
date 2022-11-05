@@ -19,3 +19,12 @@ const String MOVIE_ATTRIBUTES = 'Movie attributes:';
 const String MATCH_MOVIES = 'Match movies';
 const String MATCH_MOVIES_HEADER =
     'To adjust the movies, set your preferences on a scale of 0-10';
+const String CURRENT_PASSWORD = 'Current Password';
+const String NEW_PASSWORD = 'New Password';
+const String CHANGE_PASSWORD = 'Change Password';
+const String MY_ACCOUNT = 'My Account';
+const String PASSWORD_CHANGE = 'Password is changed';
+const String TRY_AGAIN = 'Something went wrong. Try again';
+const String PASSWORD_NOT_MATCH = "Current password doesn't match";
+const String NEW_DIFFERENT_REPEAT =
+    'New password is different from repeat password';

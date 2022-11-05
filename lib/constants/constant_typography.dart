@@ -40,3 +40,9 @@ const TextStyle EDIT_STYLE = TextStyle(
   fontWeight: FontWeight.w400,
   color: Color(0xff000000),
 );
+
+const TextStyle CHANGE_PASSWORD_STYLE = TextStyle(
+  fontSize: 24,
+  fontWeight: FontWeight.w500,
+  color: Color(0xff000000),
+);
