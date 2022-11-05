@@ -5,6 +5,7 @@ import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/admin_movies_tab.dart';
 import 'package:movie_recommender/view/main_page/widgets/all_movies_tab.dart';
+import 'package:movie_recommender/view/main_page/widgets/my_account.dart';
 import 'package:movie_recommender/view/main_page/widgets/my_preferences_tab.dart';
 
 class MainPage extends StatelessWidget {
@@ -18,19 +19,19 @@ class MainPage extends StatelessWidget {
   Widget _body(BuildContext context, bool? isAdmin) {
     if (isAdmin == null) {
       return Scaffold(
-        appBar: _appBar(),
+        appBar: _appBar(context),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (isAdmin) {
-      return AdminMoviesTab(appBar: _appBar());
+      return AdminMoviesTab(appBar: _appBar(context));
     }
 
     return BlocBuilder<BottomNavBarCubit, int>(
       builder: (_, index) {
         return Scaffold(
-          appBar: _appBar(),
+          appBar: _appBar(context),
           body: _tab(index),
           bottomNavigationBar: BottomNavigationBar(
             items: const [
@@ -51,12 +52,19 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  AppBar _appBar() {
+  AppBar _appBar(BuildContext context) {
     return AppBar(
       actions: [
         IconButton(
           onPressed: FirebaseAuth.instance.signOut,
           icon: const Icon(Icons.logout),
+        ),
+        IconButton(
+          onPressed: () async {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const MyAccount()));
+          },
+          icon: const Icon(Icons.account_circle),
         ),
       ],
     );
