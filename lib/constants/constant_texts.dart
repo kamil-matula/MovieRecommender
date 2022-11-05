@@ -25,6 +25,5 @@ const String CHANGE_PASSWORD = 'Change password';
 const String MY_ACCOUNT = 'My Account';
 const String PASSWORD_CHANGE = 'Password is changed';
 const String TRY_AGAIN = 'Something went wrong. Try again';
-const String PASSWORD_NOT_MATCH = "Current password doesn't match";
-const String NEW_DIFFERENT_REPEAT =
-    'New password is different from repeat password';
+const String PASSWORD_NOT_MATCH = 'Invalid current password';
+const String NEW_DIFFERENT_REPEAT = "Passwords don't match";
