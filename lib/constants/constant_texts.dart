@@ -27,3 +27,4 @@ const String PASSWORD_CHANGE = 'Password is changed';
 const String TRY_AGAIN = 'Something went wrong. Try again';
 const String PASSWORD_NOT_MATCH = 'Invalid current password';
 const String NEW_DIFFERENT_REPEAT = "Passwords don't match";
+const String DELETE_ACCOUNT = 'Are you sure to delete account?';
