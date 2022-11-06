@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/admin_movies_tab.dart';
@@ -54,7 +55,7 @@ class MainPage extends StatelessWidget {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      title: const Text('Movie Recommender'),
+      title: const Text(APP_NAME),
       actions: [
         IconButton(
           onPressed: () async {
