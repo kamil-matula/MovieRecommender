@@ -11,6 +11,7 @@ import 'package:movie_recommender/constants/constant_typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
 import 'package:movie_recommender/models/user.dart';
+import 'package:movie_recommender/view/output_dialog/output_dialog.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 
 class MyPreferencesTab extends StatefulWidget {
@@ -148,7 +149,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
           .asMap();
 
       // Get K nearest movies:
-      int k = 2;
+      int k = 3;
       List<Movie> matchingMovies = [];
       List<int> sortedIndexes = Map.fromEntries(
         distances.entries.toList()
@@ -158,8 +159,12 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
         matchingMovies.add(movies[sortedIndexes[i]]);
       }
 
-      // TODO: Do something with the matchingMovies (display in new dialog?)
-      print(matchingMovies.map((m) => m.title));
+      showDialog(
+        context: context,
+        builder: (_) => OutputDialog(
+          matchedMovies: matchingMovies,
+        ),
+      );
     } catch (_) {
       // TODO: Display toast or something
       print('Something went wrong. Please contact administrator');
