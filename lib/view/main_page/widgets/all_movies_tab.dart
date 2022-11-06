@@ -6,6 +6,6 @@ class AllMoviesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListOfMovies(false);
+    return const ListOfMovies(isAdmin: false);
   }
 }
