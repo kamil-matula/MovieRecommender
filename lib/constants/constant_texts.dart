@@ -34,7 +34,6 @@ const String PASSWORD_CHANGE = 'Password has been changed';
 
 const String EMPTY_EMAIL = 'Please provide your email';
 const String EMPTY_PASSWORD = 'Please provide your password';
-
-const String PASSWORD_NOT_MATCH = 'Invalid current password';
-const String NEW_DIFFERENT_REPEAT = "Passwords don't match";
+const String DIFFERENT_REPEATED = "Passwords don't match";
+const String INVALID_PASSWORD = 'Invalid current password';
 const String TRY_AGAIN = 'Something went wrong. Try again';

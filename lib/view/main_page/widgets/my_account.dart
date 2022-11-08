@@ -92,13 +92,13 @@ class _MyAccount extends State<MyAccount> {
         });
       } else {
         Fluttertoast.showToast(
-          msg: NEW_DIFFERENT_REPEAT,
+          msg: DIFFERENT_REPEATED,
           backgroundColor: Colors.grey,
         );
       }
     }).catchError((err) {
       Fluttertoast.showToast(
-        msg: PASSWORD_NOT_MATCH,
+        msg: INVALID_PASSWORD,
         backgroundColor: Colors.grey,
       );
     });
