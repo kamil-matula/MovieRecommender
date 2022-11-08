@@ -45,6 +45,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
             child: Text(
               MATCH_MOVIES_HEADER,
               style: MOVIE_TITLE_STYLE,
+              textAlign: TextAlign.center,
             ),
           ),
           StreamBuilder(
