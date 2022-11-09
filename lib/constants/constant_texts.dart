@@ -1,6 +1,6 @@
 const String APP_NAME = 'Movie Recommender';
 
-const String EMAIL = 'E-mail';
+const String EMAIL = 'Email';
 const String SIGN_IN = 'Sign in';
 const String SIGN_UP = 'Sign up';
 const String PASSWORD = 'Password';
@@ -32,6 +32,8 @@ const String NEW_PASSWORD = 'New password';
 const String CHANGE_PASSWORD = 'Change password';
 const String PASSWORD_CHANGE = 'Password has been changed';
 
-const String PASSWORD_NOT_MATCH = 'Invalid current password';
-const String NEW_DIFFERENT_REPEAT = "Passwords don't match";
+const String EMPTY_EMAIL = 'Please provide your email';
+const String EMPTY_PASSWORD = 'Please provide your password';
+const String DIFFERENT_REPEATED = "Passwords don't match";
+const String INVALID_PASSWORD = 'Invalid current password';
 const String TRY_AGAIN = 'Something went wrong. Try again';
