@@ -3,7 +3,7 @@ import 'package:movie_recommender/models/movie_attribute.dart';
 final List<MovieAttribute> movie_attributes = [
   const MovieAttribute(
     name: 'Funny',
-    description: 'How much funny movie would you like to see?',
+    description: 'How funny should be the movie?',
   ),
   const MovieAttribute(
     name: 'Scary',
@@ -11,11 +11,11 @@ final List<MovieAttribute> movie_attributes = [
   ),
   const MovieAttribute(
     name: 'Touching',
-    description: 'How much do you want to be touched?',
+    description: 'How much do you want to shed your tears during the movie?',
   ),
   const MovieAttribute(
     name: 'Romantic',
-    description: 'How much do you like romantic movies?',
+    description: 'How much do you like movies about love?',
   ),
   const MovieAttribute(
     name: 'Adventures',
@@ -23,22 +23,18 @@ final List<MovieAttribute> movie_attributes = [
   ),
   const MovieAttribute(
     name: 'Criminal',
-    description: 'How much do you want crime movie?',
+    description: 'How much do you want to see a crime in a movie?',
   ),
   const MovieAttribute(
-      name: 'Musical',
-      description: 'Do you like singing or how much do you want a musical?'),
-  const MovieAttribute(
-    name: 'Cartoon',
-    description: 'How bad do you want to see the cartoon?',
+    name: 'Music',
+    description: 'How much do you like movies with a lot of songs?',
   ),
   const MovieAttribute(
-    name: 'Historical',
-    description: 'How much do you want to see a historical movie?',
+    name: 'Family',
+    description: 'How peaceful and family-friendly movies do you prefer?',
   ),
   const MovieAttribute(
-    name: 'Young adult',
-    description:
-        'On a scale of 0-10, how much do you want a young adult movie?',
+    name: 'Action',
+    description: 'How much do you like movies with a lot of action?',
   ),
 ];

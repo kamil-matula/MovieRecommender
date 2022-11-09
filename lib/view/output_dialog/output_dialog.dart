@@ -6,7 +6,10 @@ import 'package:movie_recommender/view/main_page/widgets/movie_item.dart';
 class OutputDialog extends StatelessWidget {
   final List<Movie> matchedMovies;
 
-  const OutputDialog({Key? key, required this.matchedMovies}) : super(key: key);
+  const OutputDialog({
+    Key? key,
+    required this.matchedMovies,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
