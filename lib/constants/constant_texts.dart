@@ -24,7 +24,7 @@ const String MOVIE_ATTRIBUTES = 'Movie attributes:';
 const String MATCH_MOVIES = 'Match movies';
 const String MATCHED_MOVIES = 'Matched movies:';
 const String MATCH_MOVIES_HEADER =
-    'To adjust the movies, set your preferences on a scale of 0-10';
+    'Choose from zero to five stars on each question and get a list of three movies that suit you best!';
 
 const String MY_ACCOUNT = 'My Account';
 const String CURRENT_PASSWORD = 'Current password';
