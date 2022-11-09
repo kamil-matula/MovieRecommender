@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
 import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/view/movie_dialog/delete_dialog.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 
@@ -25,6 +26,12 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(MY_ACCOUNT),
+        actions: [
+          IconButton(
+            onPressed: () async => _onDeleteIconPressed(context),
+            icon: const Icon(Icons.delete),
+          ),
+        ],
       ),
       body: _body(context),
     );
@@ -105,5 +112,21 @@ class _AccountPageState extends State<AccountPage> {
         backgroundColor: Colors.grey,
       );
     });
+  }
+
+  Future<void> _onDeleteIconPressed(BuildContext context) async {
+    bool? hasDeleted = await showDialog(
+      context: context,
+      builder: (_) => const DeleteDialog(),
+    );
+    if (hasDeleted == true && mounted) Navigator.of(context).pop();
+  }
+
+  @override
+  void dispose() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    repeatPasswordController.dispose();
+    super.dispose();
   }
 }

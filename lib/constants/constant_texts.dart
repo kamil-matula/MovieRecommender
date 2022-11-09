@@ -15,7 +15,7 @@ const String DIRECTOR = 'Director';
 const String GENRE = 'Genre';
 const String YEAR = 'Year';
 
-const String OK = 'OK';
+const String OK = 'Okay';
 const String CANCEL = 'Cancel';
 const String CLOSE = 'Close';
 const String EDIT = 'Edit';
@@ -31,6 +31,8 @@ const String CURRENT_PASSWORD = 'Current password';
 const String NEW_PASSWORD = 'New password';
 const String CHANGE_PASSWORD = 'Change password';
 const String PASSWORD_CHANGE = 'Password has been changed';
+const String DELETE_ACCOUNT = 'Are you sure you want delete your account?';
+const String ACTION_UNDONE = 'This action cannot be undone';
 
 const String EMPTY_EMAIL = 'Please provide your email';
 const String EMPTY_PASSWORD = 'Please provide your password';
