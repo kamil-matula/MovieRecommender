@@ -9,7 +9,9 @@ import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 
 class MyAccount extends StatefulWidget {
-  const MyAccount({Key? key}) : super(key: key);
+  const MyAccount({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<MyAccount> createState() => _MyAccount();

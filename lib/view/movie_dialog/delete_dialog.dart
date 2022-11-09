@@ -22,16 +22,16 @@ class _DeleteDialogState extends State<DeleteDialog> {
       ),
       content: SizedBox(
         width: 200,
-        height: 60,
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              Icon(
-                Icons.exit_to_app,
-                size: 42,
-              ),
-            ],
-          ),
+        height: 90,
+        child: Column(
+          children: const [
+            Icon(
+              Icons.exit_to_app,
+              size: 42,
+            ),
+            SizedBox(height: 20),
+            Text(ACTION_UNDONE, style: TextStyle(color: Colors.grey))
+          ],
         ),
       ),
       contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
@@ -51,8 +51,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
   }
 
   Future<void> _deleteAccount() async {
-    final user = FirebaseAuth.instance.currentUser!;
-    user.delete();
+    FirebaseAuth.instance.currentUser?.delete();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const NavigationManager(),
