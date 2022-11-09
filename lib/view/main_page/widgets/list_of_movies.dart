@@ -6,7 +6,10 @@ import 'package:movie_recommender/view/main_page/widgets/movie_item.dart';
 class ListOfMovies extends StatelessWidget {
   final bool isAdmin;
 
-  const ListOfMovies(this.isAdmin, {Key? key}) : super(key: key);
+  const ListOfMovies({
+    required this.isAdmin,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +22,16 @@ class ListOfMovies extends StatelessWidget {
               .toList();
           return ListView.builder(
             itemCount: movies.length,
-            itemBuilder: (_, int index) => MovieItem(
-              movie: movies[index],
-              isAdmin: isAdmin,
-            ),
+            itemBuilder: (_, int index) {
+              bool isLast = index == movies.length - 1;
+
+              return isLast && isAdmin
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 88.0),
+                      child: MovieItem(movie: movies[index], isAdmin: isAdmin),
+                    )
+                  : MovieItem(movie: movies[index], isAdmin: isAdmin);
+            },
           );
         }
 

@@ -86,55 +86,7 @@ class _MovieItemState extends State<MovieItem> {
                     ),
                   ),
                 ),
-                if (widget.isAdmin)
-                  Container(
-                    width: 40,
-                    constraints: const BoxConstraints(minHeight: 140),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.cancel,
-                            color: DELETE_COLOR,
-                          ),
-                          onPressed: () async {
-                            FirebaseFirestore.instance
-                                .collection('movies')
-                                .doc(widget.movie.id)
-                                .delete();
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 5.0,
-                            right: 5.0,
-                          ),
-                          child: Ink(
-                            width: 34,
-                            decoration: const ShapeDecoration(
-                              color: FORM_BACKGROUND_COLOR,
-                              shape: CircleBorder(),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.black,
-                                size: 22,
-                              ),
-                              onPressed: () async {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) =>
-                                      MovieDialog(movie: widget.movie),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                if (widget.isAdmin) _adminButtons(context),
               ],
             ),
 
@@ -182,6 +134,59 @@ class _MovieItemState extends State<MovieItem> {
           Text(description, style: MOVIE_SUB_HEADER_STYLE),
           Text(value, style: MOVIE_HEADER_STYLE),
         ],
+      ),
+    );
+  }
+
+  Widget _adminButtons(BuildContext context) {
+    return Container(
+      width: 55,
+      constraints: const BoxConstraints(minHeight: 140),
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _oneButton(
+            color: DELETE_COLOR,
+            onTap: () async {
+              FirebaseFirestore.instance
+                  .collection('movies')
+                  .doc(widget.movie.id)
+                  .delete();
+            },
+            child: const Icon(Icons.close, color: Colors.white, size: 20),
+          ),
+          _oneButton(
+            color: FORM_BACKGROUND_COLOR,
+            onTap: () async {
+              showDialog(
+                context: context,
+                builder: (_) => MovieDialog(movie: widget.movie),
+              );
+            },
+            child: const Icon(Icons.edit, color: Colors.black, size: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _oneButton({
+    required Color color,
+    required void Function() onTap,
+    required Widget child,
+  }) {
+    return Material(
+      clipBehavior: Clip.antiAlias,
+      borderRadius: BorderRadius.circular(20),
+      color: color,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(5.0),
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: child,
+        ),
       ),
     );
   }

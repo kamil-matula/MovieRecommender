@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/view/account_page/account_page.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/admin_movies_tab.dart';
 import 'package:movie_recommender/view/main_page/widgets/all_movies_tab.dart';
-import 'package:movie_recommender/view/main_page/widgets/my_account.dart';
 import 'package:movie_recommender/view/main_page/widgets/my_preferences_tab.dart';
 
 class MainPage extends StatelessWidget {
@@ -36,11 +37,11 @@ class MainPage extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.question_mark),
+                icon: Icon(Icons.movie_outlined),
                 label: 'All Movies',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.question_mark),
+                icon: Icon(Icons.star_half),
                 label: 'My Preferences',
               ),
             ],
@@ -54,17 +55,20 @@ class MainPage extends StatelessWidget {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      title: const Text(APP_NAME),
       actions: [
+        IconButton(
+          onPressed: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AccountPage()),
+            );
+          },
+          icon: const Icon(Icons.account_circle),
+        ),
         IconButton(
           onPressed: FirebaseAuth.instance.signOut,
           icon: const Icon(Icons.logout),
-        ),
-        IconButton(
-          onPressed: () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const MyAccount()));
-          },
-          icon: const Icon(Icons.account_circle),
         ),
       ],
     );
