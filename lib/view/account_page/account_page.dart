@@ -28,15 +28,8 @@ class _AccountPageState extends State<AccountPage> {
         title: const Text(MY_ACCOUNT),
         actions: [
           IconButton(
-            onPressed: () async {
-              showDialog(
-                context: context,
-                builder: (_) => const DeleteDialog(),
-              );
-            },
-            icon: const Icon(
-              Icons.delete,
-            ),
+            onPressed: () async => _onDeleteIconPressed(context),
+            icon: const Icon(Icons.delete),
           ),
         ],
       ),
@@ -119,6 +112,14 @@ class _AccountPageState extends State<AccountPage> {
         backgroundColor: Colors.grey,
       );
     });
+  }
+
+  Future<void> _onDeleteIconPressed(BuildContext context) async {
+    bool? hasDeleted = await showDialog(
+      context: context,
+      builder: (_) => const DeleteDialog(),
+    );
+    if (hasDeleted == true && mounted) Navigator.of(context).pop();
   }
 
   @override

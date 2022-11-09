@@ -1,18 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/core/navigation_manager.dart';
 
-class DeleteDialog extends StatefulWidget {
-  const DeleteDialog({
-    Key? key,
-  }) : super(key: key);
+class DeleteDialog extends StatelessWidget {
+  const DeleteDialog({Key? key}) : super(key: key);
 
-  @override
-  State<DeleteDialog> createState() => _DeleteDialogState();
-}
-
-class _DeleteDialogState extends State<DeleteDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -20,42 +13,35 @@ class _DeleteDialogState extends State<DeleteDialog> {
         DELETE_ACCOUNT,
         textAlign: TextAlign.center,
       ),
-      content: SizedBox(
-        width: 200,
-        height: 90,
-        child: Column(
-          children: const [
-            Icon(
-              Icons.exit_to_app,
-              size: 42,
-            ),
-            SizedBox(height: 20),
-            Text(ACTION_UNDONE, style: TextStyle(color: Colors.grey))
-          ],
-        ),
+      content: const Text(
+        ACTION_UNDONE,
+        style: TextStyle(color: Colors.grey),
+        textAlign: TextAlign.center,
       ),
-      contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+      contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
       actionsAlignment: MainAxisAlignment.spaceAround,
       actionsPadding: EdgeInsets.zero,
       actions: [
         TextButton(
-          onPressed: Navigator.of(context).pop,
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text(CANCEL),
         ),
         TextButton(
-          onPressed: _deleteAccount,
+          onPressed: () async => _deleteAccount(context),
           child: const Text(OK),
         ),
       ],
     );
   }
 
-  Future<void> _deleteAccount() async {
-    FirebaseAuth.instance.currentUser?.delete();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const NavigationManager(),
-      ),
-    );
+  Future<void> _deleteAccount(BuildContext context) async {
+    FirebaseAuth.instance.currentUser?.delete().then((_) {
+      Navigator.of(context).pop(true);
+    }).catchError((error) {
+      Fluttertoast.showToast(
+        msg: TRY_AGAIN,
+        backgroundColor: Colors.grey,
+      );
+    });
   }
 }
