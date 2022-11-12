@@ -4,6 +4,7 @@ import 'package:movie_recommender/core/auth/auth_cubit.dart';
 import 'package:movie_recommender/view/auth_page/auth_page.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
+import 'package:movie_recommender/view/main_page/cubit/movies_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
 import 'package:movie_recommender/view/main_page/main_page.dart';
 
@@ -23,6 +24,7 @@ class NavigationManager extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => BottomNavBarCubit()),
         BlocProvider(create: (_) => PermissionCubit()),
+        BlocProvider(create: (_) => MoviesCubit()),
       ],
       child: const MainPage(),
     );

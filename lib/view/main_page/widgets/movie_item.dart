@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/constants/assets.dart';
 import 'package:movie_recommender/constants/colors.dart';
 import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/constants/typography.dart';
 import 'package:movie_recommender/models/movie.dart';
+import 'package:movie_recommender/view/main_page/cubit/movies_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
@@ -153,10 +154,7 @@ class _MovieItemState extends State<MovieItem> {
           _oneButton(
             color: CustomColors.bloodMoon,
             onTap: () async {
-              FirebaseFirestore.instance
-                  .collection('movies')
-                  .doc(widget.movie.id)
-                  .delete();
+              context.read<MoviesCubit>().deleteMovie(widget.movie.id);
             },
             child: const Icon(Icons.close, color: Colors.white, size: 20),
           ),
@@ -165,7 +163,10 @@ class _MovieItemState extends State<MovieItem> {
             onTap: () async {
               showDialog(
                 context: context,
-                builder: (_) => MovieDialog(movie: widget.movie),
+                builder: (_) => BlocProvider.value(
+                  value: context.read<MoviesCubit>(),
+                  child: MovieDialog(movie: widget.movie),
+                ),
               );
             },
             child: const Icon(Icons.edit, color: Colors.black, size: 20),

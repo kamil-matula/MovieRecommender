@@ -25,10 +25,9 @@ class OutputDialog extends StatelessWidget {
         height: 445,
         child: ListView.builder(
           itemCount: matchedMovies.length,
-          itemBuilder: (_, int index) => MovieItem(
-            movie: matchedMovies[index],
-            isAdmin: false,
-          ),
+          itemBuilder: (_, int index) {
+            return MovieItem(movie: matchedMovies[index], isAdmin: false);
+          },
         ),
       ),
       actionsPadding: const EdgeInsets.fromLTRB(0, 0, 10, 5),

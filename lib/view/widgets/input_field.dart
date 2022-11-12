@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:movie_recommender/constants/colors.dart';
 import 'package:movie_recommender/constants/texts.dart';
 
-/// TODO: Customise it
 class CustomInputField extends StatelessWidget {
   final TextEditingController? controller;
   final bool obscureText;

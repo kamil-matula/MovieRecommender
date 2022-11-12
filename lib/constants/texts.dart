@@ -40,3 +40,4 @@ const String EMPTY_NEW_PASSWORD = 'Please provide new password';
 const String WRONG_REPEATED = "Passwords don't match";
 const String INVALID_PASSWORD = 'Invalid current password';
 const String TRY_AGAIN = 'Something went wrong. Try again';
+const String MISSING_DATA = 'Please provide remaining data';
