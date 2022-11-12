@@ -132,7 +132,7 @@ class _MovieDialogState extends State<MovieDialog> {
         TextButton(
           onPressed: () async {
             MoviesCubit cubit = context.read<MoviesCubit>();
-            cubit.addOrEditMovie(
+            bool hasUpdated = await cubit.addOrEditMovie(
               attributes: _attributes,
               currentId: widget.movie?.id,
               currentPosterUrl: widget.movie?.poster_url,
@@ -142,6 +142,8 @@ class _MovieDialogState extends State<MovieDialog> {
               title: _titleController.text,
               year: int.tryParse(_yearController.text),
             );
+
+            if (mounted && hasUpdated) Navigator.of(context).pop();
           },
           child: const Text(OK),
         ),
