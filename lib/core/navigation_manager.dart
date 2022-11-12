@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_recommender/core/authentication/auth_cubit.dart';
+import 'package:movie_recommender/core/auth/auth_cubit.dart';
 import 'package:movie_recommender/view/auth_page/auth_page.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
