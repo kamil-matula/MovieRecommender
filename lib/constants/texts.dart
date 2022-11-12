@@ -30,12 +30,13 @@ const String MY_ACCOUNT = 'My Account';
 const String CURRENT_PASSWORD = 'Current password';
 const String NEW_PASSWORD = 'New password';
 const String CHANGE_PASSWORD = 'Change password';
-const String PASSWORD_CHANGE = 'Password has been changed';
+const String PASSWORD_CHANGED = 'Password has been changed';
 const String DELETE_ACCOUNT = 'Are you sure you want delete your account?';
 const String ACTION_UNDONE = 'This action cannot be undone';
 
 const String EMPTY_EMAIL = 'Please provide your email';
 const String EMPTY_PASSWORD = 'Please provide your password';
+const String EMPTY_NEW_PASSWORD = 'Please provide new password';
 const String WRONG_REPEATED = "Passwords don't match";
 const String INVALID_PASSWORD = 'Invalid current password';
 const String TRY_AGAIN = 'Something went wrong. Try again';
