@@ -160,7 +160,7 @@ class _MovieItemState extends State<MovieItem> {
             child: const Icon(Icons.close, color: Colors.white, size: 20),
           ),
           _oneButton(
-            color: CustomColors.lightBlueOp30,
+            color: CustomColors.lightBlueOp,
             onTap: () async {
               showDialog(
                 context: context,

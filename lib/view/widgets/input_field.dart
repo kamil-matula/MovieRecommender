@@ -40,7 +40,7 @@ class CustomInputField extends StatelessWidget {
           errorBorder: _createBorderStyle(),
           focusedErrorBorder: _createBorderStyle(),
           focusedBorder: _createBorderStyle(),
-          fillColor: CustomColors.lightBlueOp30,
+          fillColor: CustomColors.lightBlueOp,
           filled: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           labelText: labelText,

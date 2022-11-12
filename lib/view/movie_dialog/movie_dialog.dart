@@ -200,7 +200,7 @@ class _MovieDialogState extends State<MovieDialog> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: CustomColors.lightBlueOp30,
+          color: CustomColors.lightBlueOp,
           width: 2.0,
         ),
       ),

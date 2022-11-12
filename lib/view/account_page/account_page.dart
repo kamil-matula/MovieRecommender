@@ -102,7 +102,7 @@ class _AccountPageState extends State<AccountPage> {
         });
       } else {
         Fluttertoast.showToast(
-          msg: DIFFERENT_REPEATED,
+          msg: WRONG_REPEATED,
           backgroundColor: Colors.grey,
         );
       }
