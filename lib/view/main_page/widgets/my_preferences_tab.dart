@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:movie_recommender/constants/constant_movie_attributes.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/constants/movie_attributes.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
 import 'package:movie_recommender/models/user.dart';
@@ -44,7 +44,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
             padding: EdgeInsets.all(15),
             child: Text(
               MATCH_MOVIES_HEADER,
-              style: MOVIE_TITLE_STYLE,
+              style: CustomTypography.p2Semibold,
               textAlign: TextAlign.center,
             ),
           ),
@@ -90,7 +90,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
             width: 350,
             child: Text(
               user.preferences[index].description ?? '',
-              style: MOVIE_PREFERENCE_STYLE,
+              style: CustomTypography.p2Regular,
             ),
           ),
           RatingBar.builder(
@@ -162,9 +162,7 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
 
       showDialog(
         context: context,
-        builder: (_) => OutputDialog(
-          matchedMovies: matchingMovies,
-        ),
+        builder: (_) => OutputDialog(matchedMovies: matchingMovies),
       );
     } catch (_) {
       // TODO: Display toast or something

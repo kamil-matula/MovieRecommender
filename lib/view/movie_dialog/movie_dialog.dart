@@ -6,12 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:movie_recommender/constants/constant_assets.dart';
-import 'package:movie_recommender/constants/constant_colors.dart';
-import 'package:movie_recommender/constants/constant_genres.dart';
-import 'package:movie_recommender/constants/constant_movie_attributes.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/constants/assets.dart';
+import 'package:movie_recommender/constants/colors.dart';
+import 'package:movie_recommender/constants/genres.dart';
+import 'package:movie_recommender/constants/movie_attributes.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
 import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
@@ -105,7 +105,10 @@ class _MovieDialogState extends State<MovieDialog> {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
-                child: Text(MOVIE_ATTRIBUTES, style: MOVIE_HEADER_STYLE),
+                child: Text(
+                  MOVIE_ATTRIBUTES,
+                  style: CustomTypography.p3Medium,
+                ),
               ),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -125,7 +128,6 @@ class _MovieDialogState extends State<MovieDialog> {
       ),
       contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
       actionsAlignment: MainAxisAlignment.spaceAround,
-      actionsPadding: EdgeInsets.zero,
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
@@ -169,7 +171,7 @@ class _MovieDialogState extends State<MovieDialog> {
     }
 
     return Image.asset(
-      PLACEHOLDER,
+      Assets.placeholder,
       height: 140,
       width: 100,
       fit: BoxFit.cover,
@@ -198,7 +200,7 @@ class _MovieDialogState extends State<MovieDialog> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: FORM_BACKGROUND_COLOR,
+          color: CustomColors.lightBlueOp30,
           width: 2.0,
         ),
       ),

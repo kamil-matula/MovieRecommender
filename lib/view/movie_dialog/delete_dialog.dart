@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/texts.dart';
 
 class DeleteDialog extends StatelessWidget {
   const DeleteDialog({Key? key}) : super(key: key);
@@ -20,7 +20,6 @@ class DeleteDialog extends StatelessWidget {
       ),
       contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
       actionsAlignment: MainAxisAlignment.spaceAround,
-      actionsPadding: EdgeInsets.zero,
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

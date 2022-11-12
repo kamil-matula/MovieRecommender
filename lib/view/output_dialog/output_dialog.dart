@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/view/main_page/widgets/movie_item.dart';
 

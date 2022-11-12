@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
 import 'package:movie_recommender/view/movie_dialog/delete_dialog.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
@@ -47,7 +47,7 @@ class _AccountPageState extends State<AccountPage> {
             const SizedBox(height: 100),
             const Text(
               CHANGE_PASSWORD,
-              style: CHANGE_PASSWORD_STYLE,
+              style: CustomTypography.p1MediumBlack,
             ),
             const SizedBox(height: 30),
             CustomInputField(

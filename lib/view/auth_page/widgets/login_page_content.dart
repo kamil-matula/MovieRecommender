@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
@@ -29,7 +29,7 @@ class _LoginPageContentState extends State<LoginPageContent> {
         const SizedBox(height: 100),
         const Text(
           SIGN_IN,
-          style: AUTH_TITLE_TEXT_STYLE,
+          style: CustomTypography.h1,
         ),
         const SizedBox(height: 100),
         CustomInputField(controller: emailController, labelText: EMAIL),
