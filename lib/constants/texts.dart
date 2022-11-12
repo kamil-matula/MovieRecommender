@@ -41,3 +41,4 @@ const String WRONG_REPEATED = "Passwords don't match";
 const String INVALID_PASSWORD = 'Invalid current password';
 const String TRY_AGAIN = 'Something went wrong. Try again';
 const String MISSING_DATA = 'Please provide remaining data';
+const String CONTACT_ADMIN = 'Something went wrong. Please contact administrator';
