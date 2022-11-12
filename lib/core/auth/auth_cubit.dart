@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_recommender/constants/texts.dart';
-import 'package:movie_recommender/core/authentication/auth_service.dart';
+import 'package:movie_recommender/core/auth/auth_service.dart';
 
 /// Cubit responsible for signing in, up and off.
 class AuthCubit extends Cubit<bool> {

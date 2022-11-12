@@ -117,6 +117,7 @@ class _MovieItemState extends State<MovieItem> {
                         return AttributeItem(
                           attribute: widget.movie.attributes[index],
                           ignoreGestures: true,
+                          onRatingUpdate: (_) {},
                         );
                       },
                     )

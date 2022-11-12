@@ -117,8 +117,7 @@ class _MovieDialogState extends State<MovieDialog> {
                 itemBuilder: (_, index) {
                   return AttributeItem(
                     attribute: _attributes[index],
-                    onRatingUpdate: _onRatingUpdate,
-                    index: index,
+                    onRatingUpdate: (value) => _onRatingUpdate(value, index),
                   );
                 },
               )
@@ -186,11 +185,7 @@ class _MovieDialogState extends State<MovieDialog> {
       ),
       width: 30.0,
       height: 30.0,
-      child: const Icon(
-        Icons.edit,
-        color: Colors.white,
-        size: 17.5,
-      ),
+      child: const Icon(Icons.edit, color: Colors.white, size: 17.5),
     );
   }
 

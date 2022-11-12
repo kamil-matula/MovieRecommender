@@ -6,15 +6,13 @@ import 'package:movie_recommender/models/movie_attribute.dart';
 class AttributeItem extends StatelessWidget {
   final MovieAttribute attribute;
   final bool ignoreGestures;
-  final int index;
-  final void Function(double, int)? onRatingUpdate;
+  final void Function(double) onRatingUpdate;
 
   const AttributeItem({
     Key? key,
     required this.attribute,
     this.ignoreGestures = false,
-    this.onRatingUpdate,
-    this.index = 0,
+    required this.onRatingUpdate,
   }) : super(key: key);
 
   @override
@@ -24,10 +22,7 @@ class AttributeItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            attribute.name,
-            style: CustomTypography.p3Regular,
-          ),
+          Text(attribute.name, style: CustomTypography.p3Regular),
           RatingBar.builder(
             maxRating: 5,
             itemSize: 28,
@@ -35,11 +30,7 @@ class AttributeItem extends StatelessWidget {
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
             ignoreGestures: ignoreGestures,
-            onRatingUpdate: (rating) {
-              if (onRatingUpdate != null) {
-                onRatingUpdate!(rating, index);
-              }
-            },
+            onRatingUpdate: onRatingUpdate,
             initialRating: attribute.value.toDouble() / 2,
           ),
         ],

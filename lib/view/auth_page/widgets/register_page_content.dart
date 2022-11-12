@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/constants/typography.dart';
-import 'package:movie_recommender/core/authentication/auth_cubit.dart';
+import 'package:movie_recommender/core/auth/auth_cubit.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
