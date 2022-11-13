@@ -1,11 +1,8 @@
-import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
+import 'package:movie_recommender/core/auth/auth_cubit.dart';
 import 'package:movie_recommender/view/auth_page/cubit/auth_page_type_cubit.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
@@ -31,7 +28,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
         const SizedBox(height: 100),
         const Text(
           SIGN_UP,
-          style: AUTH_TITLE_TEXT_STYLE,
+          style: CustomTypography.h1,
         ),
         const SizedBox(height: 100),
         CustomInputField(controller: emailController, labelText: EMAIL),
@@ -49,8 +46,15 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
         ),
         const SizedBox(height: 20),
         CustomButton(
+          onPressed: () async {
+            AuthCubit authCubit = context.read<AuthCubit>();
+            authCubit.signUp(
+              emailController.text,
+              passwordController.text,
+              repeatedPasswordController.text,
+            );
+          },
           text: SIGN_UP,
-          onPressed: _signUp,
         ),
         TextButton(
           onPressed: context.read<AuthPageTypeCubit>().goToLoginPage,
@@ -60,48 +64,11 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
     );
   }
 
-  Future<void> _signUp() async {
-    // Basic frontend validation:
-    if (emailController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: EMPTY_EMAIL,
-        backgroundColor: Colors.grey,
-      );
-      return;
-    }
-    if (passwordController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: EMPTY_PASSWORD,
-        backgroundColor: Colors.grey,
-      );
-      return;
-    }
-    if (repeatedPasswordController.text != passwordController.text) {
-      Fluttertoast.showToast(
-        msg: DIFFERENT_REPEATED,
-        backgroundColor: Colors.grey,
-      );
-      return;
-    }
-
-    // Request to Firebase:
-    String email = emailController.text;
-    String password = passwordController.text;
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password)
-        .catchError(_onLoginError);
-  }
-
-  FutureOr<UserCredential> _onLoginError(Object err, StackTrace st) async {
-    if (err is FirebaseAuthException && err.message != null) {
-      // Remove dot from the end of message:
-      String msg = err.message!.endsWith('.')
-          ? err.message!.substring(0, err.message!.length - 1)
-          : err.message!;
-      Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey);
-    } else {
-      Fluttertoast.showToast(msg: TRY_AGAIN, backgroundColor: Colors.grey);
-    }
-    return Future.error(err);
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    repeatedPasswordController.dispose();
+    super.dispose();
   }
 }

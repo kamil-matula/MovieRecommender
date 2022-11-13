@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_recommender/view/main_page/cubit/movies_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/list_of_movies.dart';
 import 'package:movie_recommender/view/movie_dialog/movie_dialog.dart';
 
@@ -19,7 +21,10 @@ class AdminMoviesTab extends StatelessWidget {
         onPressed: () async {
           showDialog(
             context: context,
-            builder: (_) => const MovieDialog(),
+            builder: (_) => BlocProvider.value(
+              value: context.read<MoviesCubit>(),
+              child: const MovieDialog(),
+            ),
           );
         },
         child: const Icon(Icons.add),

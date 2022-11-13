@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
-import 'package:movie_recommender/view/movie_dialog/delete_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
+import 'package:movie_recommender/core/auth/auth_cubit.dart';
+import 'package:movie_recommender/view/account_page/delete_dialog.dart';
 import 'package:movie_recommender/view/widgets/custom_button.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 
@@ -47,7 +47,7 @@ class _AccountPageState extends State<AccountPage> {
             const SizedBox(height: 100),
             const Text(
               CHANGE_PASSWORD,
-              style: CHANGE_PASSWORD_STYLE,
+              style: CustomTypography.p1MediumBlack,
             ),
             const SizedBox(height: 30),
             CustomInputField(
@@ -69,49 +69,21 @@ class _AccountPageState extends State<AccountPage> {
             ),
             const SizedBox(height: 30),
             CustomButton(
-              onPressed: _changePassword,
+              onPressed: () async {
+                AuthCubit authCubit = context.read<AuthCubit>();
+                bool hasChangedPassword = await authCubit.changePassword(
+                  currentPasswordController.text,
+                  newPasswordController.text,
+                  repeatPasswordController.text,
+                );
+                if (hasChangedPassword && mounted) Navigator.of(context).pop();
+              },
               text: CHANGE_PASSWORD,
             ),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _changePassword() async {
-    final User? user = FirebaseAuth.instance.currentUser;
-    String email = FirebaseAuth.instance.currentUser?.email ?? '';
-    final AuthCredential cred = EmailAuthProvider.credential(
-      email: email,
-      password: currentPasswordController.text,
-    );
-
-    user?.reauthenticateWithCredential(cred).then((value) {
-      if (newPasswordController.text == repeatPasswordController.text) {
-        user.updatePassword(newPasswordController.text).then((_) {
-          Fluttertoast.showToast(
-            msg: PASSWORD_CHANGE,
-            backgroundColor: Colors.grey,
-          );
-          Navigator.of(context).pop();
-        }).catchError((error) {
-          Fluttertoast.showToast(
-            msg: TRY_AGAIN,
-            backgroundColor: Colors.grey,
-          );
-        });
-      } else {
-        Fluttertoast.showToast(
-          msg: DIFFERENT_REPEATED,
-          backgroundColor: Colors.grey,
-        );
-      }
-    }).catchError((err) {
-      Fluttertoast.showToast(
-        msg: INVALID_PASSWORD,
-        backgroundColor: Colors.grey,
-      );
-    });
   }
 
   Future<void> _onDeleteIconPressed(BuildContext context) async {

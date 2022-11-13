@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/view/main_page/widgets/movie_item.dart';
 
@@ -25,10 +25,9 @@ class OutputDialog extends StatelessWidget {
         height: 445,
         child: ListView.builder(
           itemCount: matchedMovies.length,
-          itemBuilder: (_, int index) => MovieItem(
-            movie: matchedMovies[index],
-            isAdmin: false,
-          ),
+          itemBuilder: (_, int index) {
+            return MovieItem(movie: matchedMovies[index], isAdmin: false);
+          },
         ),
       ),
       actionsPadding: const EdgeInsets.fromLTRB(0, 0, 10, 5),

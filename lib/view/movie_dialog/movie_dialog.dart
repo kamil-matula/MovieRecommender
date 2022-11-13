@@ -1,24 +1,21 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:movie_recommender/constants/constant_assets.dart';
-import 'package:movie_recommender/constants/constant_colors.dart';
-import 'package:movie_recommender/constants/constant_genres.dart';
-import 'package:movie_recommender/constants/constant_movie_attributes.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
-import 'package:movie_recommender/constants/constant_typography.dart';
+import 'package:movie_recommender/constants/assets.dart';
+import 'package:movie_recommender/constants/colors.dart';
+import 'package:movie_recommender/constants/genres.dart';
+import 'package:movie_recommender/constants/movie_attributes.dart';
+import 'package:movie_recommender/constants/texts.dart';
+import 'package:movie_recommender/constants/typography.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/movie_attribute.dart';
+import 'package:movie_recommender/view/main_page/cubit/movies_cubit.dart';
 import 'package:movie_recommender/view/main_page/widgets/attribute_item.dart';
 import 'package:movie_recommender/view/widgets/input_field.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
-// TODO: Prepare cubit for this dialog (changing image and adding movie)
 class MovieDialog extends StatefulWidget {
   final Movie? movie;
 
@@ -105,7 +102,10 @@ class _MovieDialogState extends State<MovieDialog> {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
-                child: Text(MOVIE_ATTRIBUTES, style: MOVIE_HEADER_STYLE),
+                child: Text(
+                  MOVIE_ATTRIBUTES,
+                  style: CustomTypography.p3Medium,
+                ),
               ),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -114,8 +114,7 @@ class _MovieDialogState extends State<MovieDialog> {
                 itemBuilder: (_, index) {
                   return AttributeItem(
                     attribute: _attributes[index],
-                    onRatingUpdate: _onRatingUpdate,
-                    index: index,
+                    onRatingUpdate: (value) => _onRatingUpdate(value, index),
                   );
                 },
               )
@@ -125,14 +124,27 @@ class _MovieDialogState extends State<MovieDialog> {
       ),
       contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
       actionsAlignment: MainAxisAlignment.spaceAround,
-      actionsPadding: EdgeInsets.zero,
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
           child: const Text(CANCEL),
         ),
         TextButton(
-          onPressed: _addMovie,
+          onPressed: () async {
+            MoviesCubit cubit = context.read<MoviesCubit>();
+            bool hasUpdated = await cubit.addOrEditMovie(
+              attributes: _attributes,
+              currentId: widget.movie?.id,
+              currentPosterUrl: widget.movie?.poster_url,
+              director: _directorController.text,
+              genre: _selectedGenre,
+              posterFile: _file,
+              title: _titleController.text,
+              year: int.tryParse(_yearController.text),
+            );
+
+            if (mounted && hasUpdated) Navigator.of(context).pop();
+          },
           child: const Text(OK),
         ),
       ],
@@ -169,7 +181,7 @@ class _MovieDialogState extends State<MovieDialog> {
     }
 
     return Image.asset(
-      PLACEHOLDER,
+      Assets.placeholder,
       height: 140,
       width: 100,
       fit: BoxFit.cover,
@@ -184,11 +196,7 @@ class _MovieDialogState extends State<MovieDialog> {
       ),
       width: 30.0,
       height: 30.0,
-      child: const Icon(
-        Icons.edit,
-        color: Colors.white,
-        size: 17.5,
-      ),
+      child: const Icon(Icons.edit, color: Colors.white, size: 17.5),
     );
   }
 
@@ -198,7 +206,7 @@ class _MovieDialogState extends State<MovieDialog> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: FORM_BACKGROUND_COLOR,
+          color: CustomColors.lightBlueOp,
           width: 2.0,
         ),
       ),
@@ -231,55 +239,6 @@ class _MovieDialogState extends State<MovieDialog> {
   Future<void> _chooseImageFromGallery() async {
     _file = await _picker.pickImage(source: ImageSource.gallery);
     if (mounted) setState(() {});
-  }
-
-  Future<void> _addMovie() async {
-    String title = _titleController.text;
-    String director = _directorController.text;
-    int? year = int.tryParse(_yearController.text);
-
-    if (title.isEmpty || director.isEmpty || year == null) {
-      Fluttertoast.showToast(
-        msg: 'Invalid data!',
-        backgroundColor: Colors.grey,
-      );
-      return;
-    }
-
-    String id = widget.movie?.id ?? '${title}_$year';
-    String? poster_url = widget.movie?.poster_url;
-
-    // Upload poster to Firebase Storage:
-    if (_file != null) {
-      TaskSnapshot snapshot = await FirebaseStorage.instance
-          .ref()
-          .child('posters')
-          .child('$id.jpg')
-          .putFile(
-            File(_file!.path),
-            SettableMetadata(contentType: 'image/jpeg'),
-          );
-      poster_url = await snapshot.ref.getDownloadURL();
-    }
-
-    // Prepare object:
-    Movie movie = Movie(
-      id: id,
-      title: title,
-      director: director,
-      genre: _selectedGenre,
-      year: year,
-      poster_url: poster_url,
-      attributes: _attributes,
-    );
-
-    // Save object in Firestore Database:
-    FirebaseFirestore.instance
-        .collection('movies')
-        .doc(id)
-        .set(jsonDecode(jsonEncode(movie.toJson())));
-
-    if (mounted) Navigator.of(context).pop();
   }
 
   @override

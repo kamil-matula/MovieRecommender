@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_recommender/constants/constant_texts.dart';
+import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/view/account_page/account_page.dart';
 import 'package:movie_recommender/view/main_page/cubit/bottom_nav_bar_cubit.dart';
 import 'package:movie_recommender/view/main_page/cubit/permission_cubit.dart';
