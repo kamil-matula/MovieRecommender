@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/constants/typography.dart';
-import 'package:movie_recommender/core/db/db_service.dart';
 import 'package:movie_recommender/models/movie.dart';
 import 'package:movie_recommender/models/user.dart';
 import 'package:movie_recommender/view/main_page/cubit/my_preferences_cubit.dart';
@@ -49,12 +48,8 @@ class _MyPreferencesTabState extends State<MyPreferencesTab> {
               child: CustomButton(
                 text: MATCH_MOVIES,
                 onPressed: () async {
-                  // Get user's preferences:
-                  User user = (await DbService.getUserWithPreferences())!;
-                  // Get movies:
-                  List<Movie> movies = await DbService.getListOfMovies();
-                  List<Movie> matchedMovies =
-                      await MyPreferencesCubit.getMatchingMovies(user, movies);
+                  MyPreferencesCubit cubit = context.read<MyPreferencesCubit>();
+                  List<Movie> matchedMovies = await cubit.getMatchingMovies();
                   if (!mounted) return;
 
                   showDialog(

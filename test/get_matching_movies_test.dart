@@ -7,22 +7,12 @@ import 'package:movie_recommender/view/main_page/cubit/my_preferences_cubit.dart
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late List<List<MovieAttribute>> preferences;
-  List<List<int>> values;
-  late User user;
-  late List<Movie> movies;
+  MyPreferencesCubit cubit = MyPreferencesCubit(isTest: true);
+  List<List<MovieAttribute>> listOfListsOfMovieAttributes = [];
+  List<Movie> movies = [];
 
   setUp(() {
-    preferences = [
-      <MovieAttribute>[],
-      <MovieAttribute>[],
-      <MovieAttribute>[],
-      <MovieAttribute>[],
-      <MovieAttribute>[],
-      <MovieAttribute>[],
-    ];
-
-    values = [
+    List<List<int>> values = [
       [0, 2, 2, 4, 6, 6, 8, 10, 10],
       [0, 1, 1, 3, 5, 5, 7, 0, 0],
       [1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -31,87 +21,113 @@ void main() {
       [1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
-    for (int j = 0; j < values.length; j++) {
-      for (int i = 0; i < movie_attributes.length; i++) {
-        preferences[j].add(movie_attributes[i].copyWith(value: values[j][i]));
+    for (int i = 0; i < values.length; i++) {
+      List<MovieAttribute> movieAttributes = [];
+      for (int j = 0; j < movie_attributes.length; j++) {
+        movieAttributes.add(movie_attributes[j].copyWith(value: values[i][j]));
       }
+      listOfListsOfMovieAttributes.add(movieAttributes);
     }
 
-    movies = preferences
-        .map(
-          (pref) => Movie(
-            id: 'id',
-            title: 'title',
-            director: 'director',
-            genre: 'genre',
-            year: 1,
-            attributes: pref,
-          ),
-        )
-        .toList();
+    int i = 0;
+    movies = listOfListsOfMovieAttributes.map((attributes) {
+      i += 1;
+      return Movie(
+        id: i.toString(),
+        title: 'Movie $i',
+        director: 'Director $i',
+        genre: 'Genre $i',
+        year: i,
+        attributes: attributes,
+      );
+    }).toList();
   });
+
   group('get_matching_movies', () {
     test('should return movies at 0, 3, 1 index', () async {
-      user = User(email: 'email@email.com', preferences: preferences[0]);
-      final actual = await MyPreferencesCubit.getMatchingMovies(user, movies);
-      expect(
-        actual,
-        [movies[0], movies[3], movies[1]],
+      User user = User(
+        email: 'email@email.com',
+        preferences: listOfListsOfMovieAttributes[0],
       );
+
+      List<Movie> result =
+          await cubit.getMatchingMovies(user: user, movies: movies);
+      expect(result, [movies[0], movies[3], movies[1]]);
     });
 
     test(
         'entered movies have the same values, so test should return movies at 2, 4, 5 index',
         () async {
-      user = User(
+      User user = User(
         email: 'email@email.com',
         preferences: movie_attributes.map((e) => e.copyWith(value: 0)).toList(),
       );
-      final actual = await MyPreferencesCubit.getMatchingMovies(user, movies);
-      expect(
-        actual,
-        [movies[2], movies[4], movies[5]],
-      );
+
+      List<Movie> result =
+          await cubit.getMatchingMovies(user: user, movies: movies);
+      expect(result, [movies[2], movies[4], movies[5]]);
     });
 
     test('should return empty list', () async {
-      user = User(email: 'email@email.com', preferences: preferences[0]);
-      final actual = await MyPreferencesCubit.getMatchingMovies(user, []);
-      expect(actual, []);
+      User user = User(
+        email: 'email@email.com',
+        preferences: listOfListsOfMovieAttributes[0],
+      );
+
+      List<Movie> result =
+          await cubit.getMatchingMovies(user: user, movies: []);
+      expect(result, []);
     });
 
     test('should return list of length 3', () async {
-      user = User(email: 'email@email.com', preferences: preferences[3]);
-      final actual = await MyPreferencesCubit.getMatchingMovies(
-        user,
-        [movies[2], movies[0], movies[0]],
+      User user = User(
+        email: 'email@email.com',
+        preferences: listOfListsOfMovieAttributes[3],
       );
-      expect(actual.length, 3);
+
+      List<Movie> result = await cubit.getMatchingMovies(
+        user: user,
+        movies: [movies[2], movies[0], movies[0]],
+      );
+      expect(result.length, 3);
     });
 
     test('should return list of length 2', () async {
-      user = User(email: 'email@email.com', preferences: preferences[3]);
-      final actual = await MyPreferencesCubit.getMatchingMovies(
-        user,
-        [movies[2], movies[0]],
+      User user = User(
+        email: 'email@email.com',
+        preferences: listOfListsOfMovieAttributes[3],
       );
-      expect(actual.length, 2);
+
+      List<Movie> result = await cubit.getMatchingMovies(
+        user: user,
+        movies: [movies[2], movies[0]],
+      );
+      expect(result.length, 2);
     });
 
     test('should return list of length 1', () async {
-      user = User(email: 'email@email.com', preferences: preferences[3]);
-      final actual = await MyPreferencesCubit.getMatchingMovies(
-        user,
-        [movies[2]],
+      User user = User(
+        email: 'email@email.com',
+        preferences: listOfListsOfMovieAttributes[3],
       );
-      expect(actual.length, 1);
+
+      List<Movie> result = await cubit.getMatchingMovies(
+        user: user,
+        movies: [movies[2]],
+      );
+      expect(result.length, 1);
     });
 
     test('user\'s preferences are empty, so test should return empty list',
         () async {
-      user = const User(email: 'email@email.com', preferences: []);
-      final actual = await MyPreferencesCubit.getMatchingMovies(user, movies);
-      expect(actual, []);
+      User user = const User(
+        email: 'email@email.com',
+        preferences: [],
+      );
+
+      List<Movie> result =
+          await cubit.getMatchingMovies(user: user, movies: movies);
+      expect(result, []);
     });
   });
 }
