@@ -60,7 +60,9 @@ void main() {
       );
     });
 
-    test('should return movies at 2, 4, 5 index', () async {
+    test(
+        'entered movies have the same values, so test should return movies at 2, 4, 5 index',
+        () async {
       user = User(
         email: 'email@email.com',
         preferences: movie_attributes.map((e) => e.copyWith(value: 0)).toList(),
@@ -78,13 +80,39 @@ void main() {
       expect(actual, []);
     });
 
-    test('should return movies at 0, 2 index', () async {
+    test('should return list of length 3', () async {
+      user = User(email: 'email@email.com', preferences: preferences[3]);
+      final actual = await MyPreferencesCubit.getMatchingMovies(
+        user,
+        [movies[2], movies[0], movies[0]],
+      );
+      expect(actual.length, 3);
+    });
+
+    test('should return list of length 2', () async {
       user = User(email: 'email@email.com', preferences: preferences[3]);
       final actual = await MyPreferencesCubit.getMatchingMovies(
         user,
         [movies[2], movies[0]],
       );
-      expect(actual, [movies[0], movies[2]]);
+      expect(actual.length, 2);
+    });
+
+    test('should return list of length 1', () async {
+      user = User(email: 'email@email.com', preferences: preferences[3]);
+      final actual = await MyPreferencesCubit.getMatchingMovies(
+        user,
+        [movies[2]],
+      );
+      expect(actual.length, 1);
+    });
+
+    test(
+        'user\'s preferences are empty, so test should return movies at 2, 4, 5 index',
+        () async {
+      user = const User(email: 'email@email.com', preferences: []);
+      final actual = await MyPreferencesCubit.getMatchingMovies(user, movies);
+      expect(actual, [movies[2], movies[4], movies[5]]);
     });
   });
 }

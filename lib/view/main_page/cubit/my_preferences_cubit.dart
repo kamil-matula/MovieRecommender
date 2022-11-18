@@ -65,7 +65,7 @@ class MyPreferencesCubit extends Cubit<User?> {
           .asMap();
 
       // Get K nearest movies:
-      int k = 3;
+      int k = movies.length >= 3 ? 3 : movies.length;
       List<Movie> matchingMovies = [];
       List<int> sortedIndexes = Map.fromEntries(
         distances.entries.toList()
