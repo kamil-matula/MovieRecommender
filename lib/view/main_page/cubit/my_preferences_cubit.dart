@@ -51,14 +51,12 @@ class MyPreferencesCubit extends Cubit<User?> {
   }
 
   /// Uses kNN to get k nearest movies.
-  Future<List<Movie>> getMatchingMovies() async {
+  static Future<List<Movie>> getMatchingMovies(
+    User user,
+    List<Movie> movies,
+  ) async {
     try {
-      // Get user's preferences:
-      User user = (await DbService.getUserWithPreferences())!;
       List<MovieAttribute> userPreferences = user.preferences;
-
-      // Get movies:
-      List<Movie> movies = await DbService.getListOfMovies();
 
       // Calculate distances:
       Map<int, int> distances = movies
@@ -86,7 +84,7 @@ class MyPreferencesCubit extends Cubit<User?> {
 
   /// Calculates distance between [Movie]'s attributes
   /// and user's preferences with usage of Manhattan's metric.
-  int _calculateDistance(
+  static int _calculateDistance(
     List<MovieAttribute> movieAttributes,
     List<MovieAttribute> userPreferences,
   ) {
