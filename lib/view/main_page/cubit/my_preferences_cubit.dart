@@ -58,6 +58,8 @@ class MyPreferencesCubit extends Cubit<User?> {
     try {
       List<MovieAttribute> userPreferences = user.preferences;
 
+      if (userPreferences.isEmpty) return [];
+
       // Calculate distances:
       Map<int, int> distances = movies
           .map((movie) => _calculateDistance(movie.attributes, userPreferences))

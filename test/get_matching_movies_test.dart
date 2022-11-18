@@ -107,12 +107,11 @@ void main() {
       expect(actual.length, 1);
     });
 
-    test(
-        'user\'s preferences are empty, so test should return movies at 2, 4, 5 index',
+    test('user\'s preferences are empty, so test should return empty list',
         () async {
       user = const User(email: 'email@email.com', preferences: []);
       final actual = await MyPreferencesCubit.getMatchingMovies(user, movies);
-      expect(actual, [movies[2], movies[4], movies[5]]);
+      expect(actual, []);
     });
   });
 }
