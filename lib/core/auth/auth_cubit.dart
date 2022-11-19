@@ -30,50 +30,55 @@ class AuthCubit extends Cubit<bool> {
     return AuthService.isUserAuthenticated().listen(emit);
   }
 
-  /// Checks provided data and displays Toasts if something is wrong
-  /// or signs in/up.
-  Future<void> handleLoginDetails(
+  /// Logs user in with provided email and password.
+  Future<void> signIn(String email, String password) async {
+    AuthEnum result = await checkIfDataIsCorrect(email, password);
+
+    if (result == AuthEnum.CORRECT_INPUT) {
+      AuthService.signIn(email, password).catchError(
+        _onFirebaseError<UserCredential>,
+      );
+    }
+  }
+
+  /// Registers user in with provided email and password.
+  Future<void> signUp(
     String email,
-    String password, {
-    String repeatedPassword = '',
-  }) async {
-    // Basic frontend validation:
-    switch (checkIfDataIsCorrect(
+    String password,
+    String repeatedPassword,
+  ) async {
+    AuthEnum result = await checkIfDataIsCorrect(
       email,
       password,
       repeatedPassword: repeatedPassword,
-    )) {
-      case AuthEnum.EMPTY_EMAIL:
-        return _displayToast(EMPTY_EMAIL);
-      case AuthEnum.EMPTY_PASSWORD:
-        return _displayToast(EMPTY_PASSWORD);
-      case AuthEnum.WRONG_REPEATED_PASSWORD:
-        return _displayToast(WRONG_REPEATED);
-      case AuthEnum.CORRECT_INPUT:
-        if (repeatedPassword == '') {
-          // Logs user in with provided email and password.
-          AuthService.signIn(email, password).catchError(
-            _onFirebaseError<UserCredential>,
-          );
-        } else {
-          // Registers user in with provided email and password.
-          AuthService.signUp(email, password).catchError(
-            _onFirebaseError<UserCredential>,
-          );
-        }
-        break;
+    );
+
+    if (result == AuthEnum.CORRECT_INPUT) {
+      AuthService.signUp(email, password).catchError(
+        _onFirebaseError<UserCredential>,
+      );
     }
   }
 
   /// Checks if provided email, password and repeated passwords are correct.
-  AuthEnum checkIfDataIsCorrect(
+  Future<AuthEnum> checkIfDataIsCorrect(
     String email,
     String password, {
-    String repeatedPassword = '',
-  }) {
-    if (email.isEmpty) return AuthEnum.EMPTY_EMAIL;
-    if (password.isEmpty) return AuthEnum.EMPTY_PASSWORD;
-    if (password != repeatedPassword) return AuthEnum.WRONG_REPEATED_PASSWORD;
+    String? repeatedPassword,
+    bool isTest = false,
+  }) async {
+    if (email.isEmpty) {
+      _displayToast(EMPTY_EMAIL, isTest: isTest);
+      return AuthEnum.EMPTY_EMAIL;
+    }
+    if (password.isEmpty) {
+      _displayToast(EMPTY_PASSWORD, isTest: isTest);
+      return AuthEnum.EMPTY_PASSWORD;
+    }
+    if (repeatedPassword != null && password != repeatedPassword) {
+      _displayToast(WRONG_REPEATED, isTest: isTest);
+      return AuthEnum.WRONG_REPEATED_PASSWORD;
+    }
     return AuthEnum.CORRECT_INPUT;
   }
 
@@ -155,8 +160,10 @@ class AuthCubit extends Cubit<bool> {
   }
 
   /// Shows grey toast at the bottom of the screen.
-  Future<void> _displayToast(String msg) async {
-    Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey);
+  Future<void> _displayToast(String msg, {bool isTest = false}) async {
+    if (!isTest) {
+      Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey);
+    }
   }
 
   @override
