@@ -27,17 +27,20 @@ class _LoginPageContentState extends State<LoginPageContent> {
         const Text(SIGN_IN, style: CustomTypography.h1),
         const SizedBox(height: 100),
         CustomInputField(
+          key: const Key('login_page_email_field'),
           controller: emailController,
           labelText: EMAIL,
         ),
         const SizedBox(height: 20),
         CustomInputField(
+          key: const Key('login_page_password_field'),
           controller: passwordController,
           obscureText: true,
           labelText: PASSWORD,
         ),
         const SizedBox(height: 20),
         CustomButton(
+          key: const Key('login_page_sign_in_button'),
           onPressed: () async {
             AuthCubit authCubit = context.read<AuthCubit>();
             authCubit.signIn(emailController.text, passwordController.text);
