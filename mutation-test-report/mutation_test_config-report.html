@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  color: black;
+  cursor: pointer;
+  padding: 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+}
+
+.hit {
+  background-color: #DAE7FE;
+}
+
+.hit:hover {
+  color: white;
+  background-color: #6688D4;
+}
+
+.problem {
+  background-color: #FF6230;
+}
+
+.problem:hover {
+  background-color: #FF0000;
+}
+
+span.lineNumber
+{
+  display: inline-block;
+  color: black;
+  background-color: #EFE383;
+}
+
+.addedLine {
+background-color: rgb(200, 255, 200)
+}
+.changedTokens {
+background-color: rgb(50, 255, 50)
+}
+
+pre
+{
+  font-family: monospace;
+  white-space: pre;
+}
+
+pre.fileContents
+{
+  margin: 0px;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  background-color: #f1f1f1;
+}
+table{
+    border-collapse: collapse;
+}
+
+hr.ruler
+{
+  height:3px;
+  border-width:0;
+  color:#6688D4;
+  background-color:#6688D4
+}
+td.title
+{
+  text-align: center;
+  padding-bottom: 10px;
+  font-family: Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: italic;
+  font-weight: bold;
+}
+td.footer {
+  text-align: center;
+  padding-bottom: 10px;
+  font-family: Helvetica, sans-serif;
+  font-size: 12pt;
+}
+
+td.ItemLabel
+{
+  text-align: right;
+  padding-right: 6px;
+  font-family: sans-serif;
+  font-weight: bold;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+td.mutationLabel
+{
+  text-align: right;
+  padding-right: 6px;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+td.mutationText
+{
+  text-align: left;
+  vertical-align: top;
+}
+
+
+
+td.ItemText
+{
+  text-align: left;
+  padding-right: 6px;
+  font-family: sans-serif;
+  font-weight: bold;
+  color:#6688D4;
+  white-space: nowrap;
+}
+
+td.ItemReport
+{
+  text-align: right;
+  color: #284FA8;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: #DAE7FE;
+  border-collapse: unset;
+  border: 2px;
+  border-color: white;
+  border-style: solid;
+}
+
+td.FileLink
+{
+  text-align: left;
+  color: #284FA8;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: #DAE7FE;
+  border-collapse: unset;
+  border: 2px;
+  border-color: white;
+  border-style: solid;
+}
+
+
+td.ItemReportHigh
+{
+  text-align: right;
+  color: black;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: #A7FC9D;
+  border-collapse: unset;
+  border: 2px;
+  border-color: white;
+  border-style: solid;
+}
+
+td.ItemReportMedium
+{
+  text-align: right;
+  color: black;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: #FFEA20;
+  border-collapse: unset;
+  border: 2px;
+  border-color: white;
+  border-style: solid;
+}
+
+td.ItemReportLow
+{
+  text-align: right;
+  color: black;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: #FF0000;
+  border-collapse: unset;
+  border: 2px;
+  border-color: white;
+  border-style: solid;
+}
+
+td.MiddleHeader
+{
+  text-align: center;
+  padding-right: 6px;
+  padding-left: 6px;
+  font-family: sans-serif;
+  white-space: nowrap;
+}
+
+td.ItemHead
+{
+  text-align: center;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: #6688D4;
+  border-collapse: unset;
+  border: 1px;
+  border-color: white;
+  border-style: solid;
+}
+
+
+td.barHi
+{
+  background-color: #00eb00;
+}
+
+td.barMed
+{
+  background-color: #FFEA20;
+}
+
+td.barLo
+{
+  background-color: #ff0000;
+}
+
+td.barBg
+{
+  background-color: #FFFFFF;
+}
+
+</style>
+</head>
+<body>
+<table width ="100%" cellspacing="0" border="0">
+    <tr><td class="title">Mutation test report</td></tr>
+     <tr><td><hr class="ruler"/></td></tr>
+
+     <tr>
+     <td width="100%">
+     <table width="100%" cellpadding="1" border="0">
+     <tbody><tr>
+     <td class="ItemLabel" width="10%">Current display:</td>
+     <td class="ItemText" width="35%">top level</td>
+     <td width="10%"></td>
+     <td class="MiddleHeader" width="15%">Detected</td>
+     <td class="MiddleHeader" width="15%">Total</td>
+     <td class="MiddleHeader" width="15%">Percentage</td>
+     </tr>
+
+     <tr>
+     <td class="ItemLabel" width="10%">Date:</td>
+     <td class="ItemText" width="35%">2022-11-19 14:49:12.442016</td>
+     <td class="ItemLabel" width="10%">Mutations:</td>
+     <td class="ItemReport" width="15%">12</td>
+     <td class="ItemReport" width="15%">15</td>
+     <td class="ItemReportHigh" width="15%">80.0 %</td>
+     </tr>
+     
+     <tr>
+     <td class="ItemLabel" width="10%">Builtin rules:</td>
+     <td class="ItemText" width="35%">true</td>
+     <td class="ItemLabel" width="10%">Timeouts:</td>
+     <td class="ItemReport" width="15%">0</td>
+     <td class="ItemReport" width="15%">15</td>
+     <td class="ItemReportHigh" width="15%">0.0 %</td>
+     </tr>
+     <tr>
+     <td class="ItemLabel" width="10%">Quality rating:</td>
+     <td class="ItemText" width="35%">B</td>
+     <td class="ItemLabel" width="10%">Success:</td>
+     <td class="ItemText" width="15%">true</td>
+     <td class="ItemText" width="15%"></td>
+     <td class="ItemText" width="15%"></td>
+     </tr>
+       </tbody>
+     </table>
+     </td>
+     </tr>
+     
+
+     
+     <tr><td><hr class="ruler"/></td></tr>
+</table>
+
+<center>
+<table width ="80%" cellspacing="1" border="0">
+     <tbody>
+     <tr><td width="60%"></td><td width="10%"></td><td width="10%"></td><td width="10%"></td><td width="10%"></td></tr>
+     <tr><td class="ItemHead" width="60%">Path</td><td class="ItemHead" width="30%" colspan="3">Detection rate</td><td class="ItemHead" width="10%">Timeouts</td></tr>
+<tr><td class="FileLink" width="60%"><a href="lib/view/main_page/cubit/my_preferences_cubit.dart.html">lib/view/main_page/cubit/my_preferences_cubit.dart</a></td>
+  <td class="ItemReport" width="10%">
+  <table width="100%" cellpadding="0" border="1"><tr>
+    <td class="barHi" width="80.0%" height="10"></td>
+    <td class="barBg" width="20.0%" height="10"></td>
+  </tr></table>
+  </td>
+  <td class="ItemReportHigh" width="10%">80.0 %</td>
+  <td class="ItemReportHigh" width="10%">12 / 15</td>
+  <td class="ItemReportHigh" width="10%">0 / 15</td>
+</tr>
+    </tbody>
+</table>
+</center>
+
+
+<table width ="100%" cellspacing="0" border="0">
+  <tr><td><hr class="ruler"/></td></tr>
+  <tr><td class="footer">Generated by <a href="https://domohuhn.github.io/mutation-test/">mutation-test version: 1.3.1</a></td></tr>
+</table>
+</body>
+</html>

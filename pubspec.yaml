@@ -28,6 +28,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
+  mutation_test: ^1.3.1
 
 flutter_icons:
   android: true
