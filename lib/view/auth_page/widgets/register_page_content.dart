@@ -48,10 +48,10 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
         CustomButton(
           onPressed: () async {
             AuthCubit authCubit = context.read<AuthCubit>();
-            authCubit.signUp(
+            authCubit.handleLoginDetails(
               emailController.text,
               passwordController.text,
-              repeatedPasswordController.text,
+              repeatedPassword: repeatedPasswordController.text,
             );
           },
           text: SIGN_UP,

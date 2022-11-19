@@ -8,12 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/core/auth/auth_service.dart';
+import 'package:movie_recommender/core/enum/auth_enum.dart';
 
 /// Cubit responsible for signing in, up and off.
 class AuthCubit extends Cubit<bool> {
   StreamSubscription<bool>? _userAuthStateSub;
 
-  AuthCubit() : super(false) {
+  AuthCubit({bool isTest = false}) : super(false) {
+    if (isTest) return;
     _userAuthStateSub = _initUserAuthStateSubscription();
   }
 
@@ -22,33 +24,51 @@ class AuthCubit extends Cubit<bool> {
     return AuthService.isUserAuthenticated().listen(emit);
   }
 
-  /// Logs user in with provided email and password.
-  Future<void> signIn(String email, String password) async {
+  /// Checks provided data and displays Toasts if something is wrong
+  /// or signs in/up.
+  Future<void> handleLoginDetails(
+    String email,
+    String password, {
+    String repeatedPassword = '',
+  }) async {
     // Basic frontend validation:
-    if (email.isEmpty) return _displayToast(EMPTY_EMAIL);
-    if (password.isEmpty) return _displayToast(EMPTY_PASSWORD);
-
-    // Request to Firebase:
-    AuthService.signIn(email, password).catchError(
-      _onFirebaseError<UserCredential>,
-    );
+    switch (checkIfDataIsCorrect(
+      email,
+      password,
+      repeatedPassword: repeatedPassword,
+    )) {
+      case AuthEnum.EMPTY_EMAIL:
+        return _displayToast(EMPTY_EMAIL);
+      case AuthEnum.EMPTY_PASSWORD:
+        return _displayToast(EMPTY_PASSWORD);
+      case AuthEnum.WRONG_REPEATED_PASSWORD:
+        return _displayToast(WRONG_REPEATED);
+      case AuthEnum.CORRECT_INPUT:
+        if (repeatedPassword == '') {
+          // Logs user in with provided email and password.
+          AuthService.signIn(email, password).catchError(
+            _onFirebaseError<UserCredential>,
+          );
+        } else {
+          // Registers user in with provided email and password.
+          AuthService.signUp(email, password).catchError(
+            _onFirebaseError<UserCredential>,
+          );
+        }
+        break;
+    }
   }
 
-  /// Registers user in with provided email and password.
-  Future<void> signUp(
+  /// Checks if provided email, password and repeated passwords are correct.
+  AuthEnum checkIfDataIsCorrect(
     String email,
-    String password,
-    String repeatedPassword,
-  ) async {
-    // Basic frontend validation:
-    if (email.isEmpty) return _displayToast(EMPTY_EMAIL);
-    if (password.isEmpty) return _displayToast(EMPTY_PASSWORD);
-    if (repeatedPassword != password) return _displayToast(WRONG_REPEATED);
-
-    // Request to Firebase:
-    AuthService.signUp(email, password).catchError(
-      _onFirebaseError<UserCredential>,
-    );
+    String password, {
+    String repeatedPassword = '',
+  }) {
+    if (email.isEmpty) return AuthEnum.EMPTY_EMAIL;
+    if (password.isEmpty) return AuthEnum.EMPTY_PASSWORD;
+    if (password != repeatedPassword) return AuthEnum.WRONG_REPEATED_PASSWORD;
+    return AuthEnum.CORRECT_INPUT;
   }
 
   /// Signs user out.
