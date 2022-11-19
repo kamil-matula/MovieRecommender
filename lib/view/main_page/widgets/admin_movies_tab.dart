@@ -18,7 +18,6 @@ class AdminMoviesTab extends StatelessWidget {
       appBar: appBar,
       body: const ListOfMovies(isAdmin: true),
       floatingActionButton: FloatingActionButton(
-        key: const Key('admin_movies_fab'),
         onPressed: () async {
           showDialog(
             context: context,
