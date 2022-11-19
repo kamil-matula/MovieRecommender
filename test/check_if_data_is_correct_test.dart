@@ -125,6 +125,15 @@ void main() {
       'every tests should return AuthEnum.CORRECT_INPUT', () {
     const expected = AuthEnum.CORRECT_INPUT;
 
+    test('set email, password', () async {
+      final actual = await cubit.checkIfDataIsCorrect(
+        'email',
+        'password',
+        isTest: true,
+      );
+      expect(actual, expected);
+    });
+
     test('set email, password and repeatedPassword which are the same',
         () async {
       final actual = await cubit.checkIfDataIsCorrect(
