@@ -77,12 +77,14 @@ class _MovieDialogState extends State<MovieDialog> {
               ),
               const SizedBox(height: 15),
               CustomInputField(
+                key: const Key('movie_dialog_title_field'),
                 controller: _titleController,
                 labelText: MOVIE_TITLE,
                 lengthLimit: 200,
               ),
               const SizedBox(height: 15),
               CustomInputField(
+                key: const Key('movie_dialog_director_field'),
                 controller: _directorController,
                 labelText: DIRECTOR,
               ),
@@ -91,6 +93,7 @@ class _MovieDialogState extends State<MovieDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomInputField(
+                    key: const Key('movie_dialog_year_field'),
                     controller: _yearController,
                     labelText: YEAR,
                     width: 120,

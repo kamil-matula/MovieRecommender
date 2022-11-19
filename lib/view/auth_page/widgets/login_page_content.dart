@@ -27,11 +27,13 @@ class _LoginPageContentState extends State<LoginPageContent> {
         const Text(SIGN_IN, style: CustomTypography.h1),
         const SizedBox(height: 100),
         CustomInputField(
+          key: const Key('login_page_email_field'),
           controller: emailController,
           labelText: EMAIL,
         ),
         const SizedBox(height: 20),
         CustomInputField(
+          key: const Key('login_page_password_field'),
           controller: passwordController,
           obscureText: true,
           labelText: PASSWORD,

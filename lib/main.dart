@@ -15,7 +15,7 @@ void main() async {
   );
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(BlocProvider(create: (_) => AuthCubit(), child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,12 +23,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardDismisser(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Movie Recommender',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: const NavigationManager(),
+    return BlocProvider(
+      create: (_) => AuthCubit(),
+      child: KeyboardDismisser(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Movie Recommender',
+          theme: ThemeData(primarySwatch: Colors.blue),
+          home: const NavigationManager(),
+        ),
       ),
     );
   }
