@@ -9,11 +9,20 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/core/auth/auth_service.dart';
 
+enum AuthEnum {
+  EMPTY_EMAIL,
+  EMPTY_PASSWORD,
+  WRONG_REPEATED_PASSWORD,
+  CORRECT_INPUT,
+}
+
 /// Cubit responsible for signing in, up and off.
 class AuthCubit extends Cubit<bool> {
+  final bool isTest;
   StreamSubscription<bool>? _userAuthStateSub;
 
-  AuthCubit() : super(false) {
+  AuthCubit({this.isTest = false}) : super(false) {
+    if (isTest) return;
     _userAuthStateSub = _initUserAuthStateSubscription();
   }
 
@@ -24,11 +33,9 @@ class AuthCubit extends Cubit<bool> {
 
   /// Logs user in with provided email and password.
   Future<void> signIn(String email, String password) async {
-    // Basic frontend validation:
-    if (email.isEmpty) return _displayToast(EMPTY_EMAIL);
-    if (password.isEmpty) return _displayToast(EMPTY_PASSWORD);
+    AuthEnum result = await validateAuthData(email, password);
+    if (result != AuthEnum.CORRECT_INPUT) return;
 
-    // Request to Firebase:
     AuthService.signIn(email, password).catchError(
       _onFirebaseError<UserCredential>,
     );
@@ -40,15 +47,37 @@ class AuthCubit extends Cubit<bool> {
     String password,
     String repeatedPassword,
   ) async {
-    // Basic frontend validation:
-    if (email.isEmpty) return _displayToast(EMPTY_EMAIL);
-    if (password.isEmpty) return _displayToast(EMPTY_PASSWORD);
-    if (repeatedPassword != password) return _displayToast(WRONG_REPEATED);
+    AuthEnum result = await validateAuthData(
+      email,
+      password,
+      repeatedPassword: repeatedPassword,
+    );
+    if (result != AuthEnum.CORRECT_INPUT) return;
 
-    // Request to Firebase:
     AuthService.signUp(email, password).catchError(
       _onFirebaseError<UserCredential>,
     );
+  }
+
+  /// Checks if provided email, password and repeated password are correct.
+  Future<AuthEnum> validateAuthData(
+    String email,
+    String password, {
+    String? repeatedPassword,
+  }) async {
+    if (email.isEmpty) {
+      _displayToast(EMPTY_EMAIL);
+      return AuthEnum.EMPTY_EMAIL;
+    }
+    if (password.isEmpty) {
+      _displayToast(EMPTY_PASSWORD);
+      return AuthEnum.EMPTY_PASSWORD;
+    }
+    if (repeatedPassword != null && password != repeatedPassword) {
+      _displayToast(WRONG_REPEATED);
+      return AuthEnum.WRONG_REPEATED_PASSWORD;
+    }
+    return AuthEnum.CORRECT_INPUT;
   }
 
   /// Signs user out.
@@ -130,6 +159,7 @@ class AuthCubit extends Cubit<bool> {
 
   /// Shows grey toast at the bottom of the screen.
   Future<void> _displayToast(String msg) async {
+    if (isTest) return;
     Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey);
   }
 

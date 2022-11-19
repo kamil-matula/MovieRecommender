@@ -40,7 +40,10 @@ class _LoginPageContentState extends State<LoginPageContent> {
         CustomButton(
           onPressed: () async {
             AuthCubit authCubit = context.read<AuthCubit>();
-            authCubit.signIn(emailController.text, passwordController.text);
+            authCubit.signIn(
+              emailController.text,
+              passwordController.text,
+            );
           },
           text: SIGN_IN,
         ),
