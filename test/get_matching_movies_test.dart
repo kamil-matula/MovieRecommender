@@ -21,6 +21,7 @@ void main() {
       [1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
+    listOfListsOfMovieAttributes.clear();
     for (int i = 0; i < values.length; i++) {
       List<MovieAttribute> movieAttributes = [];
       for (int j = 0; j < movie_attributes.length; j++) {
