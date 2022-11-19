@@ -8,7 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie_recommender/constants/texts.dart';
 import 'package:movie_recommender/core/auth/auth_service.dart';
-import 'package:movie_recommender/core/enum/auth_enum.dart';
+
+enum AuthEnum {
+  EMPTY_EMAIL,
+  EMPTY_PASSWORD,
+  WRONG_REPEATED_PASSWORD,
+  CORRECT_INPUT,
+}
 
 /// Cubit responsible for signing in, up and off.
 class AuthCubit extends Cubit<bool> {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_recommender/core/auth/auth_cubit.dart';
-import 'package:movie_recommender/core/enum/auth_enum.dart';
 
 void main() {
   AuthCubit cubit = AuthCubit(isTest: true);
