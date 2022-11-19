@@ -52,9 +52,9 @@ void main() {
           preferences: listOfListsOfMovieAttributes[0],
         );
 
-        List<Movie> result =
+        List<Movie> actual =
             await cubit.getMatchingMovies(user: user, movies: movies);
-        expect(result, [movies[0], movies[3], movies[1]]);
+        expect(actual, [movies[0], movies[3], movies[1]]);
       },
     );
 
@@ -67,9 +67,9 @@ void main() {
               movie_attributes.map((e) => e.copyWith(value: 0)).toList(),
         );
 
-        List<Movie> result =
+        List<Movie> actual =
             await cubit.getMatchingMovies(user: user, movies: movies);
-        expect(result, [movies[2], movies[4], movies[5]]);
+        expect(actual, [movies[2], movies[4], movies[5]]);
       },
     );
 
@@ -81,9 +81,9 @@ void main() {
           preferences: listOfListsOfMovieAttributes[0],
         );
 
-        List<Movie> result =
+        List<Movie> actual =
             await cubit.getMatchingMovies(user: user, movies: []);
-        expect(result, []);
+        expect(actual, []);
       },
     );
 
@@ -95,11 +95,11 @@ void main() {
           preferences: listOfListsOfMovieAttributes[3],
         );
 
-        List<Movie> result = await cubit.getMatchingMovies(
+        List<Movie> actual = await cubit.getMatchingMovies(
           user: user,
           movies: [movies[2], movies[0], movies[0]],
         );
-        expect(result.length, 3);
+        expect(actual.length, 3);
       },
     );
 
@@ -111,11 +111,11 @@ void main() {
           preferences: listOfListsOfMovieAttributes[3],
         );
 
-        List<Movie> result = await cubit.getMatchingMovies(
+        List<Movie> actual = await cubit.getMatchingMovies(
           user: user,
           movies: [movies[2], movies[0]],
         );
-        expect(result.length, 2);
+        expect(actual.length, 2);
       },
     );
 
@@ -127,11 +127,11 @@ void main() {
           preferences: listOfListsOfMovieAttributes[3],
         );
 
-        List<Movie> result = await cubit.getMatchingMovies(
+        List<Movie> actual = await cubit.getMatchingMovies(
           user: user,
           movies: [movies[2]],
         );
-        expect(result.length, 1);
+        expect(actual.length, 1);
       },
     );
 
@@ -143,9 +143,9 @@ void main() {
           preferences: [],
         );
 
-        List<Movie> result =
+        List<Movie> actual =
             await cubit.getMatchingMovies(user: user, movies: movies);
-        expect(result, []);
+        expect(actual, []);
       },
     );
   });

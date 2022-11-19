@@ -18,9 +18,10 @@ enum AuthEnum {
 
 /// Cubit responsible for signing in, up and off.
 class AuthCubit extends Cubit<bool> {
+  final bool isTest;
   StreamSubscription<bool>? _userAuthStateSub;
 
-  AuthCubit({bool isTest = false}) : super(false) {
+  AuthCubit({this.isTest = false}) : super(false) {
     if (isTest) return;
     _userAuthStateSub = _initUserAuthStateSubscription();
   }
@@ -32,13 +33,12 @@ class AuthCubit extends Cubit<bool> {
 
   /// Logs user in with provided email and password.
   Future<void> signIn(String email, String password) async {
-    AuthEnum result = await checkIfDataIsCorrect(email, password);
+    AuthEnum result = await validateAuthData(email, password);
+    if (result != AuthEnum.CORRECT_INPUT) return;
 
-    if (result == AuthEnum.CORRECT_INPUT) {
-      AuthService.signIn(email, password).catchError(
-        _onFirebaseError<UserCredential>,
-      );
-    }
+    AuthService.signIn(email, password).catchError(
+      _onFirebaseError<UserCredential>,
+    );
   }
 
   /// Registers user in with provided email and password.
@@ -47,36 +47,34 @@ class AuthCubit extends Cubit<bool> {
     String password,
     String repeatedPassword,
   ) async {
-    AuthEnum result = await checkIfDataIsCorrect(
+    AuthEnum result = await validateAuthData(
       email,
       password,
       repeatedPassword: repeatedPassword,
     );
+    if (result != AuthEnum.CORRECT_INPUT) return;
 
-    if (result == AuthEnum.CORRECT_INPUT) {
-      AuthService.signUp(email, password).catchError(
-        _onFirebaseError<UserCredential>,
-      );
-    }
+    AuthService.signUp(email, password).catchError(
+      _onFirebaseError<UserCredential>,
+    );
   }
 
-  /// Checks if provided email, password and repeated passwords are correct.
-  Future<AuthEnum> checkIfDataIsCorrect(
+  /// Checks if provided email, password and repeated password are correct.
+  Future<AuthEnum> validateAuthData(
     String email,
     String password, {
     String? repeatedPassword,
-    bool isTest = false,
   }) async {
     if (email.isEmpty) {
-      _displayToast(EMPTY_EMAIL, isTest: isTest);
+      _displayToast(EMPTY_EMAIL);
       return AuthEnum.EMPTY_EMAIL;
     }
     if (password.isEmpty) {
-      _displayToast(EMPTY_PASSWORD, isTest: isTest);
+      _displayToast(EMPTY_PASSWORD);
       return AuthEnum.EMPTY_PASSWORD;
     }
     if (repeatedPassword != null && password != repeatedPassword) {
-      _displayToast(WRONG_REPEATED, isTest: isTest);
+      _displayToast(WRONG_REPEATED);
       return AuthEnum.WRONG_REPEATED_PASSWORD;
     }
     return AuthEnum.CORRECT_INPUT;
@@ -160,10 +158,9 @@ class AuthCubit extends Cubit<bool> {
   }
 
   /// Shows grey toast at the bottom of the screen.
-  Future<void> _displayToast(String msg, {bool isTest = false}) async {
-    if (!isTest) {
-      Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey);
-    }
+  Future<void> _displayToast(String msg) async {
+    if (isTest) return;
+    Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey);
   }
 
   @override
