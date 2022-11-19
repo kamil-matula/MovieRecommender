@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ import 'package:movie_recommender/models/user.dart';
 class MyPreferencesCubit extends Cubit<User?> {
   StreamSubscription<User?>? _preferencesSub;
 
-  MyPreferencesCubit() : super(null) {
+  MyPreferencesCubit({bool isTest = false}) : super(null) {
+    if (isTest) return;
     unawaited(_createUserInDb());
     _preferencesSub = _initPreferencesSubscription();
   }
@@ -51,14 +53,18 @@ class MyPreferencesCubit extends Cubit<User?> {
   }
 
   /// Uses kNN to get k nearest movies.
-  Future<List<Movie>> getMatchingMovies() async {
+  Future<List<Movie>> getMatchingMovies({
+    User? user,
+    List<Movie>? movies,
+  }) async {
     try {
       // Get user's preferences:
-      User user = (await DbService.getUserWithPreferences())!;
+      user ??= (await DbService.getUserWithPreferences())!;
       List<MovieAttribute> userPreferences = user.preferences;
+      if (userPreferences.isEmpty) return [];
 
       // Get movies:
-      List<Movie> movies = await DbService.getListOfMovies();
+      movies ??= await DbService.getListOfMovies();
 
       // Calculate distances:
       Map<int, int> distances = movies
@@ -67,7 +73,7 @@ class MyPreferencesCubit extends Cubit<User?> {
           .asMap();
 
       // Get K nearest movies:
-      int k = 3;
+      int k = min(3, movies.length);
       List<Movie> matchingMovies = [];
       List<int> sortedIndexes = Map.fromEntries(
         distances.entries.toList()
