@@ -273,11 +273,11 @@ td.barBg
 
      <tr>
      <td class="ItemLabel" width="10%">Date:</td>
-     <td class="ItemText" width="35%">2022-11-19 14:49:12.445238</td>
+     <td class="ItemText" width="35%">2022-11-19 22:29:00.708291</td>
      <td class="ItemLabel" width="10%">Mutations:</td>
+     <td class="ItemReport" width="15%">10</td>
      <td class="ItemReport" width="15%">12</td>
-     <td class="ItemReport" width="15%">15</td>
-     <td class="ItemReportHigh" width="15%">80.0 %</td>
+     <td class="ItemReportHigh" width="15%">83.3 %</td>
      </tr>
      
      <tr>
@@ -285,7 +285,7 @@ td.barBg
      <td class="ItemText" width="35%">true</td>
      <td class="ItemLabel" width="10%">Timeouts:</td>
      <td class="ItemReport" width="15%">0</td>
-     <td class="ItemReport" width="15%">15</td>
+     <td class="ItemReport" width="15%">12</td>
      <td class="ItemReportHigh" width="15%">0.0 %</td>
      </tr>
      </tbody>
@@ -320,19 +320,8 @@ td.barBg
 <a name="18"><span class="lineNumber">      18 </span>  StreamSubscription&lt;User?&gt;? _preferencesSub;</a>
 <a name="19"><span class="lineNumber">      19 </span></a>
 <a name="20"><span class="lineNumber">      20 </span>  MyPreferencesCubit({bool isTest = false}) : super(null) {</a>
-<a name="21"><button class="collapsible hit"><pre class="fileContents"><span class="lineNumber">      21 </span>    if (isTest) return;</pre></button>
-<div class="content">
-<b>Detected mutations:</b>
-<table class="mutationTable">
-<tr><td class="mutationLabel" width="10%">1 :</td><td class="mutationText" width="90%"><span class="addedLine">+    <span class="changedTokens"> if (!(isTest) return;
-    unawaited(_createUserInDb());
-    _preferencesSub = _initPreferencesSubscription();
-  }
-
-  /// Initializes user's attributes' listener.
-  StreamSubscription&lt;User?&gt; _initPreferencesSubscription()) {</span></span></td></tr></table>
-
-</div></a><a name="22"><span class="lineNumber">      22 </span>    unawaited(_createUserInDb());</a>
+<a name="21"><span class="lineNumber">      21 </span>    if (isTest) return;</a>
+<a name="22"><span class="lineNumber">      22 </span>    unawaited(_createUserInDb());</a>
 <a name="23"><span class="lineNumber">      23 </span>    _preferencesSub = _initPreferencesSubscription();</a>
 <a name="24"><span class="lineNumber">      24 </span>  }</a>
 <a name="25"><span class="lineNumber">      25 </span></a>
@@ -345,63 +334,8 @@ td.barBg
 <a name="32"><span class="lineNumber">      32 </span>  Future&lt;void&gt; _createUserInDb() async {</a>
 <a name="33"><span class="lineNumber">      33 </span>    // Get user's object from Firestore Database:</a>
 <a name="34"><span class="lineNumber">      34 </span>    User? user = await DbService.getUserWithPreferences();</a>
-<a name="35"><button class="collapsible problem"><pre class="fileContents"><span class="lineNumber">      35 </span>    if (user != null) return;</pre></button>
-<div class="content">
-<b>Undetected mutations:</b>
-<table class="mutationTable">
-<tr><td class="mutationLabel" width="10%">1 :</td><td class="mutationText" width="90%"><span class="addedLine">+     if (user <span class="changedTokens">==</span> null) return;</span></td></tr></table>
-<b>Detected mutations:</b>
-<table class="mutationTable">
-<tr><td class="mutationLabel" width="10%">1 :</td><td class="mutationText" width="90%"><span class="addedLine">+    <span class="changedTokens"> if (!(user != null) return;
-
-    // Make sure that user has email:
-    String email = auth.FirebaseAuth.instance.currentUser?.email ?? '';
-    if (email.isEmpty) return;
-
-    // Save object in Firestore Database:
-    user = User(
-      email: email,
-      preferences: movie_attributes.map((e) =&gt; e.copyWith(value: 5)).toList(),
-    );
-    await DbService.updatePreferences(jsonDecode(jsonEncode(user.toJson())));
-  }
-
-  /// Updates user's object in DB.
-  Future&lt;void&gt; updateAttribute(User user, int index, int value) async {
-    user.preferences[index] = user.preferences[index].copyWith(value: value);
-    await DbService.updatePreferences(jsonDecode(jsonEncode(user.toJson())));
-  }
-
-  /// Uses kNN to get k nearest movies.
-  Future&lt;List&lt;Movie&gt;&gt; getMatchingMovies({
-    User? user,
-    List&lt;Movie&gt;? movies,
-  }) async {
-    try {
-      // Get user's preferences:
-      user ??= (await DbService.getUserWithPreferences())!;
-      List&lt;MovieAttribute&gt; userPreferences = user.preferences;
-      if (userPreferences.isEmpty) return [];
-
-      // Get movies:
-      movies ??= await DbService.getListOfMovies();
-
-      // Calculate distances:
-      Map&lt;int, int&gt; distances = movies
-          .map((movie) =&gt; _calculateDistance(movie.attributes, userPreferences))
-          .toList()
-          .asMap();
-
-      // Get K nearest movies:
-      int k = min(3, movies.length);
-      List&lt;Movie&gt; matchingMovies = [];
-      List&lt;int&gt; sortedIndexes = Map.fromEntries(
-        distances.entries.toList()
-          ..sort((e1, e2) =&gt; e1.value.compareTo(e2.value)),
-      ).keys.toList();
-      for (int i = 0; i &lt; k; i++)) {</span></span></td></tr></table>
-
-</div></a><a name="36"><span class="lineNumber">      36 </span></a>
+<a name="35"><span class="lineNumber">      35 </span>    if (user != null) return;</a>
+<a name="36"><span class="lineNumber">      36 </span></a>
 <a name="37"><span class="lineNumber">      37 </span>    // Make sure that user has email:</a>
 <a name="38"><span class="lineNumber">      38 </span>    String email = auth.FirebaseAuth.instance.currentUser?.email ?? '';</a>
 <a name="39"><span class="lineNumber">      39 </span>    if (email.isEmpty) return;</a>
