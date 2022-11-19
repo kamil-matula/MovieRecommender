@@ -40,7 +40,6 @@ class _LoginPageContentState extends State<LoginPageContent> {
         ),
         const SizedBox(height: 20),
         CustomButton(
-          key: const Key('login_page_sign_in_button'),
           onPressed: () async {
             AuthCubit authCubit = context.read<AuthCubit>();
             authCubit.signIn(emailController.text, passwordController.text);
