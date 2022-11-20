@@ -57,6 +57,7 @@ class DefaultFirebaseOptions {
     appId: '1:492318221766:android:0e5c0710e118282ce8bec7',
     messagingSenderId: '492318221766',
     projectId: 'movie-recommender-75d4a',
+    databaseURL: 'https://movie-recommender-75d4a-default-rtdb.firebaseio.com',
     storageBucket: 'movie-recommender-75d4a.appspot.com',
   );
 }
